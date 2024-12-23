@@ -207,21 +207,25 @@
   "references": [
     {
       "name": "Professor Xiang Hao",
+      "url": "https://www.haoxiang.ac.cn",
       "icon": "fa-solid fa-thumbtack",
       "reference": "College of Optical Science and Engineering, Zhejiang University"
     },
     {
       "name": "Professor Yifan Peng",
+      "url": "https://www.eee.hku.hk/~evanpeng",
       "icon": "fa-solid fa-thumbtack",
       "reference": "Department of Electrical and Electronic Engineering, The University of Hong Kong"
     },
     {
       "name": "Professor Cuifang Kuang",
+      "url": "https://person.zju.edu.cn/cfkuang",
       "icon": "fa-solid fa-thumbtack",
       "reference": "College of Optical Science and Engineering, Zhejiang University"
     },
     {
       "name": "Professor Xu Liu",
+      "url": "https://person.zju.edu.cn/0090123",
       "icon": "fa-solid fa-thumbtack",
       "reference": "College of Optical Science and Engineering, Zhejiang University"
     }
