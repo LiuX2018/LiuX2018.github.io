@@ -16,12 +16,18 @@
             {% for item in content.items %}
               {% assign i = i | plus: 1 %}
             {% endfor %}
-            <td colspan="{{ i }}" class="list-group-category">{{ content.name }}</td>
+            <td colspan="{{ i }}" class="list-group-category">
+              {% if content.url %}
+                <a href="{{ content.url }}">{{ content.name }}</a>
+              {% else %}
+                {{ content.name }}
+              {% endif %}
+            </td>
           </tr>
           <tr>
             <td></td>
             <td class="list-group-name">
-              <b><a href="{{ content.url }}">{{ content.reference }}</a></b>
+              <b>{{ content.reference }}</b>
             </td>
           </tr>
         </tbody>
