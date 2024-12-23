@@ -24,8 +24,9 @@
   "work": [
     {
       "name": "Department of Electrical and Electronic Engineering, The University of Hong Kong",
+      "location": "Hong Kong SAR, China",
       "position": "Postdoctoral Fellow",
-      "url": "https://example.com",
+      "url": "https://hku.welight.fun/people",
       "startDate": "2024-04-03",
       "endDate": "Present",
       "summary": "Computational Optics",
@@ -57,7 +58,7 @@
     },
     {
       "institution": "The University of Hong Kong",
-      "location": "Hong Kong, China",
+      "location": "Hong Kong SAR, China",
       "url": "https://www.hku.hk",
       "area": "Computational Optics",
       "studyType": "Research Postgraduate Visiting Student",
