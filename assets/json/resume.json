@@ -1,7 +1,7 @@
 {
   "basics": {
     "name": "Xin Liu",
-    "label": "Scientist",
+    "label": "Postdoctoral Fellow",
     "image": "",
     "email": "liuxin24@hku.hk",
     "url": "https://LiuX2018.github.io",
@@ -26,10 +26,10 @@
       "name": "Department of Electrical and Electronic Engineering, The University of Hong Kong",
       "position": "Postdoctoral Fellow",
       "url": "https://example.com",
-      "startDate": "1933-01-01",
-      "endDate": "1955-01-01",
-      "summary": "Teaching at Palmer Physical Laboratory (now 302 Frist Campus Center). While not a professor at Princeton, I associated with the physics professors and continued to give lectures on campus.",
-      "highlights": ["Relativity"]
+      "startDate": "2024-04-03",
+      "endDate": "Present",
+      "summary": "Computational Optics",
+      "highlights": ["Improve the imaging quality of optical systems"]
     }
   ],
   "volunteer": [
