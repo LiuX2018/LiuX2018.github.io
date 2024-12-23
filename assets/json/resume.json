@@ -70,11 +70,11 @@
       "institution": "The University of Hong Kong",
       "location": "Hong Kong SAR, China",
       "url": "https://www.hku.hk",
-      "area": "Computational Optics",
+      "area": "N/A",
       "studyType": "Research Postgraduate Visiting Student",
       "startDate": "2022-12",
       "endDate": "2023-04",
-      "courses": [""]
+      "courses": ["N/A"]
     },
     {
       "institution": "South China University of Technology",
@@ -84,7 +84,7 @@
       "studyType": "BS",
       "startDate": "2014-09",
       "endDate": "2018-06",
-      "courses": [""]
+      "courses": ["N/A"]
     }
   ],
   "awards": [
