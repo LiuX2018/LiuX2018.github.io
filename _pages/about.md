@@ -5,7 +5,7 @@ permalink: /
 subtitle: <a href='https://www.eee.hku.hk/'>Department of Electrical and Electronic Engineering</a>, <a href='https://www.hku.hk'>The University of Hong Kong</a>.
 
 profile:
-  align: right
+  align: left
   image: xin_recent_photo.jpg
   image_circular: true # crops the image to make it circular
   # more_info: >
