@@ -1,17 +1,17 @@
 {
   "basics": {
     "name": "Xin Liu",
-    "label": "Postdoctoral Fellow",
+    "label": "Researcher",
     "image": "",
     "email": "liuxin24@hku.hk",
     "url": "https://LiuX2018.github.io",
     "summary": "A researcher in optics",
     "location": {
-      "address": "2712 Broadway St",
-      "postalCode": "CA 94115",
-      "city": "San Francisco",
-      "countryCode": "US",
-      "region": "California"
+      "address": "Pokfulam Road, The University of Hong Kong",
+      "postalCode": "",
+      "city": "Hong Kong",
+      "countryCode": "CN",
+      "region": "Hong Kong SAR"
     },
     "profiles": [
       {
