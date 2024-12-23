@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: <a href='https://www.hku.hk'>The University of Hong Kong</a>. <a href='https://www.eee.hku.hk/'>Department of Electrical and Electronic Engineering</a>.
+subtitle: <a href='https://www.eee.hku.hk/'>Department of Electrical and Electronic Engineering</a>, <a href='https://www.hku.hk'>The University of Hong Kong</a>.
 
 profile:
   align: right
