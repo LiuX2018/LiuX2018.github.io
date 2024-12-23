@@ -57,7 +57,7 @@
   ],
   "education": [
     {
-      "institution": "Zhejiang University",
+      "institution": "College of Optical Science and Engineering, Zhejiang University",
       "location": "Hangzhou, China",
       "url": "https://www.zju.edu.cn/english",
       "area": "Optical Engineering",
@@ -67,7 +67,7 @@
       "courses": ["Thesis: Research on Principles and Key Issues of Point Spread Function Engineering"]
     },
     {
-      "institution": "The University of Hong Kong",
+      "institution": "Department of Electrical and Electronic Engineering, The University of Hong Kong",
       "location": "Hong Kong SAR, China",
       "url": "https://www.hku.hk",
       "area": "Computational Optics",
@@ -77,7 +77,7 @@
       "courses": ["N/A"]
     },
     {
-      "institution": "South China University of Technology",
+      "institution": "School of Physics and Optoelectronics, South China University of Technology",
       "location": "Guangzhou, China",
       "url": "https://www.scut.edu.cn/en",
       "area": "Optoelectronic Information Science and Engineering",
