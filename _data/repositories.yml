@@ -4,10 +4,8 @@ github_users:
 repo_description_lines_max: 2
 
 github_repos:
-  - alshedivat/al-folio
-  - jekyll/jekyll
-  - twbs/bootstrap
-  - jquery/jquery
-  - FortAwesome/Font-Awesome
-  - mathjax/MathJax
-  - jpswalsh/academicons
+  - LiuX2018/On-computational-optics
+  - Hao-Laboratory/Angular-Spectrum-Rearrangement
+  - whywww/ASASM
+  - Hao-Laboratory/Diffraction-based-SLM-calibration
+  - Hao-Laboratory/OAM-Ctrl
