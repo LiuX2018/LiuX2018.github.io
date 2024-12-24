@@ -179,13 +179,13 @@
       {{ periodical | strip }}
     </div>
     <div class="periodical" style="color: #007BFF;">
-      {{ entry.note | strip }}
+      <strong style="color: inherit;">{{ entry.note | strip }}</strong>
     </div>
 
     <!-- Links/Buttons -->
     <div class="links">
       {% if entry.award %}
-        <a class="award btn btn-sm z-depth-0" role="button">
+        <a class="award btn btn-sm z-depth-0" role="button" style="font-weight: bold; border: 2px solid;">
           {%- if entry.award_name %}{{ entry.award_name }}{% else %}Awarded{% endif -%}
         </a>
       {% endif %}
