@@ -1,7 +1,7 @@
 github_users:
   - LiuX2018
 
-# modify the following lines to update description of the repositories
+# modify the following "lines_max" if repo's description is not updated
 repo_description_lines_max: 3
 
 github_repos:
