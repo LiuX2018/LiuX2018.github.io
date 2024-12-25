@@ -1,8 +1,8 @@
 github_users:
   - LiuX2018
 
-# modify the following "lines_max" if repo's description is not updated
-repo_description_lines_max: 3
+# The repo's description is not updated in real-time beacause the api has cache limit in 6~24 hours, seeing "https://github.com/anuraghazra/github-readme-stats#common-options"
+repo_description_lines_max: 2
 
 github_repos:
   - LiuX2018/On-computational-optics
