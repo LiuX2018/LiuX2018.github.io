@@ -1,7 +1,8 @@
 github_users:
   - LiuX2018
 
-repo_description_lines_max: 2
+# modify the following lines to update description of the repositories
+repo_description_lines_max: 3
 
 github_repos:
   - LiuX2018/On-computational-optics
