@@ -8,9 +8,13 @@
 # dblp_url: # your DBLP profile url
 # discord_id: # your discord id (18-digit unique numerical identifier)
 email: liuxin.optics@gmail.com # your email address
+scholar_userid: umJBbTwAAAAJ # your Google Scholar ID
+linkedin_username: xin-liu-94697a227 # your LinkedIn user name
+github_username: LiuX2018 # your GitHub user name
+research_gate_profile: Xin-Liu-194 # your profile on ResearchGate
+orcid_id: 0000-0002-4371-018X # your ORCID ID
 # facebook_id: # your facebook id
 # flickr_id: # your flickr id
-github_username: LiuX2018 # your GitHub user name
 # gitlab_username: # your GitLab user name
 # ieee_id: # your ieeexplore.ieee.org/author/id
 # inspirehep_id: 1010907 # Inspire HEP author ID
@@ -20,17 +24,13 @@ github_username: LiuX2018 # your GitHub user name
 # lastfm_id: # your lastfm id
 # lattes_id: # your ID on Lattes (Brazilian Lattes CV)
 # leetcode_id: # your LeetCode id
-linkedin_username: xin-liu-94697a227 # your LinkedIn user name
 # mastodon_username: # your mastodon instance+username in the format instance.tld/@username
 # medium_username: # your Medium username
-orcid_id: 0000-0002-4371-018X # your ORCID ID
 # osf_id: # your OSF ID
 # pinterest_id: # your pinterest id
 # publons_id: # your ID on Publons
 # quora_username: # your Quora username
-research_gate_profile: Xin-Liu-194 # your profile on ResearchGate
 # rss_icon: true # set to true to show the RSS icon
-scholar_userid: umJBbTwAAAAJ # your Google Scholar ID
 # scopus_id: # your profile on Scopus
 # semanticscholar_id: # your Semantic Scholar ID
 # spotify_id: # your spotify id
