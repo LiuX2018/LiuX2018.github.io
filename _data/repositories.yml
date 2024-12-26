@@ -1,7 +1,7 @@
 github_users:
   - LiuX2018
 
-# The repo's description is not updated in real-time beacause the api has cache limit in 6~24 hours, seeing "https://github.com/anuraghazra/github-readme-stats#common-options"
+# The repo's description is not updated in real-time beacause the api has cache limit in 6~24 hours, seeing "https://github.com/anuraghazra/github-readme-stats#common-options". I have built my own api
 repo_description_lines_max: 2
 
 github_repos:
