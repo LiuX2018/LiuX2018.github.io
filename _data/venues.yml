@@ -1,9 +1,7 @@
-"AJP":
-  url: https://aapt.scitation.org/journal/ajp
-  color: "#00369f"
+"Optica":
+  url: https://opg.optica.org/optica/home.cfm
+  color: "#25297B"
 
-"PhysRev":
-  url: https://journals.aps.org/
-
-"Vision":
-  color: "#009f36"
+"arXiv":
+  url: https://journals.aps.org
+  color: "#A42C25"
