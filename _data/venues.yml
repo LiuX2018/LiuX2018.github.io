@@ -1,7 +1,55 @@
+"Nature":
+  url: https://www.nature.com
+  color: "#2A303B"
+
+"Nature Photonics":
+  url: https://www.nature.com/nphoton
+  color: "#3172B7"
+
+"Nature Methods":
+  url: https://www.nature.com/nmeth
+  color: "#DA6437"
+
+"Nature Communications":
+  url: https://www.nature.com/ncomms
+  color: "#EB5338"
+
+"Lights: Science & Applications":
+  url: https://www.nature.com/lsa
+  color: "#333393"
+
+"Science":
+  url: https://www.science.org
+  color: "#C53825"
+
+"Science Advances":
+  url: https://www.science.org/journal/sciadv
+  color: "#B7352F"
+
 "Optica":
   url: https://opg.optica.org/optica/home.cfm
   color: "#25297B"
 
+"Physical Review Letters":
+  url: https://journals.aps.org/prl
+  color: "#215287"
+
 "arXiv":
   url: https://journals.aps.org
   color: "#A42C25"
+
+"SIGGRAPH Asia":
+  url: https://dl.acm.org/conference/siggraph-asia/proceedings
+  color: "#81D2FB"
+
+"SIGGRAPH":
+  url: https://dl.acm.org/conference/siggraph/proceedings
+  color: "#3D6398"
+
+"CVPR":
+  url: https://cvpr.thecvf.com
+  color: "#BBC8E0"
+
+"ICCP":
+  url: https://ieeexplore.ieee.org/xpl/conhome/1800125/all-proceedings
+  color: "#E6C08A"
