@@ -61,7 +61,7 @@
       "location": "Hangzhou, China",
       "url": "https://www.zju.edu.cn/english",
       "area": "Optical Engineering",
-      "studyType": "PhD",
+      "studyType": "Ph.D.",
       "startDate": "2018-09",
       "endDate": "2023-12",
       "courses": ["Thesis: Research on principles and key issues of point spread function engineering"]
@@ -81,7 +81,7 @@
       "location": "Guangzhou, China",
       "url": "https://www.scut.edu.cn/en",
       "area": "Optoelectronic Information Science and Engineering",
-      "studyType": "BS",
+      "studyType": "B.E.",
       "startDate": "2014-09",
       "endDate": "2018-06",
       "courses": ["N/A"]
