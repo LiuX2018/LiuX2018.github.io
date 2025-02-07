@@ -1,3 +1,6 @@
+# run the following commands to build the site locally:
+# 1. docker compose up
+# 2. docker compose pull
 # -----------------------------------------------------------------------------
 # Site settings
 # -----------------------------------------------------------------------------
