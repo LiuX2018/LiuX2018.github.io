@@ -6,7 +6,8 @@ repo_description_lines_max: 2
 
 github_repos:
   - LiuX2018/On-computational-optics
-  - Hao-Laboratory/Angular-Spectrum-Rearrangement
+  - Hao-Laboratory/Tightly-focused-field-tomography
+  - Hao-Laboratory/Angular-spectrum-rearrangement
   - whywww/ASASM
   - Hao-Laboratory/Diffraction-based-SLM-calibration
   - Hao-Laboratory/OAM-Ctrl
