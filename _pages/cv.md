@@ -1,7 +1,7 @@
 ---
 layout: cv
 permalink: /cv/
-title: cv
+title: CV
 nav: true
 nav_order: 5
 cv_pdf: https://github.com/LiuX2018/CV/blob/master/CV_XL_EN.pdf # you can also use external links here
