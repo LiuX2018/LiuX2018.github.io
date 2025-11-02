@@ -1,8 +1,12 @@
-# run the following commands to build the site locally:
+# VPN is required in Chinese mainland!
+# 1. add VPN rule: DOMAIN-SUFFIX,localhost,DIRECT
+# 2. switch VPN to config mode
+#
+# Run the following commands to build the site locally:
 # 1. run docker app
-# 2. run 'docker compose up' in the terminal (VPN is required in Chinese mainland!)
-# 3. switch VPN mode to direct
-# 4. open http://localhost:8080/ in webviewer
+# 2. run container in docker app or use 'docker compose up' in the terminal
+# 3. open http://localhost:8080/ in webviewer
+
 # -----------------------------------------------------------------------------
 # Site settings
 # -----------------------------------------------------------------------------
