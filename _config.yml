@@ -1,7 +1,8 @@
 # run the following commands to build the site locally:
 # 1. run docker app
-# 2. run 'docker compose up' in the terminal
-# Optional: docker compose pull
+# 2. run 'docker compose up' in the terminal (VPN is required in Chinese mainland!)
+# 3. switch VPN mode to direct
+# 4. open http://0.0.0.0:8080/ in webviewer
 # -----------------------------------------------------------------------------
 # Site settings
 # -----------------------------------------------------------------------------

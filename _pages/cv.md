@@ -1,6 +1,7 @@
 ---
 layout: cv
-permalink: /cv/
+# permalink: /cv/
+permalink: /assets/pdf/CV_LIU_Xin.pdf
 title: CV
 nav: true
 nav_order: 5
