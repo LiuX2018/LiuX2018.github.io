@@ -6,4 +6,4 @@ inline: true
 related_posts: false
 ---
 
-A new paper is published in [Photonics Research](https://opg.optica.org/prj/abstract.cfm?doi=10.1364/PRJ.581493)! The first paper of my postdoctoral research. :sparkles:
+A new paper is accepted by [Photonics Research](https://opg.optica.org/prj/abstract.cfm?doi=10.1364/PRJ.581493)! The first paper of my postdoctoral research. :sparkles:
