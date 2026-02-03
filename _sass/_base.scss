@@ -17,7 +17,23 @@ li,
 span,
 strong {
   color: var(--global-text-color);
-  font-family: Arial, 'Segoe UI',-apple-system, 'Microsoft YaHei', 'STHeiti', BlinkMacSystemFont, 'Helvetica Neue', Verdana, sans-serif;
+  font-family: 'Roboto', Arial, 'Segoe UI',-apple-system, 'Microsoft YaHei', 'STHeiti', BlinkMacSystemFont, 'Helvetica Neue', Verdana, sans-serif;
+}
+
+strong,
+b,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: bold;
+}
+
+em,
+i {
+  font-style: italic;
 }
 
 hr {
