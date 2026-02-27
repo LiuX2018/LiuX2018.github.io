@@ -6,4 +6,4 @@ inline: true
 related_posts: false
 ---
 
-I received the **Outstanding Young Rising Star Awards (1/20)** at the [5th International Conference on Computational Imaging (CITA2025)](https://b2b.csoe.org.cn/meeting/CITA2025.html)! :sparkles:
+I received the **Outstanding Young Rising Star Awards (1/20)** at the [5th International Conference on Computational Imaging (CITA 2025)](https://b2b.csoe.org.cn/meeting/CITA2025.html)! :sparkles:
