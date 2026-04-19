@@ -57,3 +57,11 @@
 "ICCP":
   url: https://ieeexplore.ieee.org/xpl/conhome/1800125/all-proceedings
   color: "#E6C08A"
+
+"TPAMI":
+  url: https://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=6979
+  color: "#E6C08A"
+
+"ACS Photonics":
+  url: https://pubs.acs.org/journal/apchd5
+  color: "#0F75BD"
