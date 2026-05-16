@@ -6,4 +6,4 @@ inline: true
 related_posts: false
 ---
 
-I'm invited to give a talk at 第七届“计算成像技术与应用”专题研讨会!
+I'm invited to give a talk at 第七届“计算成像技术与应用”专题研讨会 in Shanghai!
