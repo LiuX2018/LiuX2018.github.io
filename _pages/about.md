@@ -19,8 +19,6 @@ selected_papers: true # includes a list of papers marked as "selected={true}"
 social: false # includes social icons at the bottom of the page
 ---
 
-I am currently a Postdoctoral Research Scholar at the [Computational Imaging & Mixed Representation Laboratory](https://hku.welight.fun) (WeLight Lab), [The University of Hong Kong](https://www.hku.hk) (HKU).
+I am currently a Postdoctoral Research Scholar at the [Computational Imaging & Mixed Representation Laboratory](https://hku.welight.fun) (WeLight Lab), [The University of Hong Kong](https://www.hku.hk) (HKU). My research focuses on **[Computational Optics](https://github.com/LiuX2018/On-computational-optics)**. I develope algorithms to simulate and shape light for imaging and sensing.
 
 In 2023, I earned my Ph.D. in Optical Engineering from the [X Lab](https://www.haoxiang.ac.cn), part of the [State Key Laboratory of Extreme Photonics and Instrumentation](http://www.moi-lab.zju.edu.cn/?lang=en), within the [College of Optical Science and Engineering](http://opt.zju.edu.cn/opten) at [Zhejiang University](https://www.zju.edu.cn/english) (ZJU). Prior to this, I completed my B.E. in Optoelectronic Information Science and Engineering in 2018 at the [School of Physics and Optoelectronics](https://www2.scut.edu.cn/physics/), [South China University of Technology](https://www.scut.edu.cn/en) (SCUT).
-
-I have a broad interest in **[Computational Optics](https://github.com/LiuX2018/On-computational-optics)**, currently with a particular focus on **Optics Simulator**, **Light Shaping**, **Computational Imaging**, **Adaptive Optics**, **Far-field Optical Microscopy (Nanoscopy)**, and **Optical Manufacturing**.
