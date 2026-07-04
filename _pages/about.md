@@ -7,7 +7,7 @@ subtitle: A light manipulator
 
 profile:
   align: left
-  image: xin_recent_photo.jpg
+  image: xin_recent_photo.png
   image_circular: true # crops the image to make it circular
   # more_info: >
   #   <p>301 Haking Wong Building</p>
