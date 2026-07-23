@@ -50,10 +50,6 @@
   url: https://dl.acm.org/conference/siggraph/proceedings
   color: "#3D6398"
 
-"ACM Transactions on Graphics (TOG)":
-  url: https://dl.acm.org/journal/tog
-  color: "#3D6398"
-
 "CVPR":
   url: https://cvpr.thecvf.com
   color: "#BBC8E0"
