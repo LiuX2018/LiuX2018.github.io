@@ -42,12 +42,16 @@
   url: https://journals.aps.org
   color: "#A42C25"
 
-"SIGGRAPH Asia":
+"ACM SIGGRAPH Asia":
   url: https://dl.acm.org/conference/siggraph-asia/proceedings
   color: "#81D2FB"
 
-"SIGGRAPH":
+"ACM SIGGRAPH":
   url: https://dl.acm.org/conference/siggraph/proceedings
+  color: "#3D6398"
+
+"ACM Transactions on Graphics (TOG)":
+  url: https://dl.acm.org/journal/tog
   color: "#3D6398"
 
 "CVPR":

@@ -19,7 +19,7 @@ selected_papers: true # includes a list of papers marked as "selected={true}"
 social: false # includes social icons at the bottom of the page
 ---
 
-I develope algorithms to simulate and shape light for imaging and sensing.
+I develop algorithms to simulate and shape light for imaging and sensing.
 
 I am currently a Postdoctoral Research Scholar at the [Computational Imaging & Mixed Representation Laboratory](https://hku.welight.fun) (WeLight Lab), [The University of Hong Kong](https://www.hku.hk) (HKU). My research focuses on **[Computational Optics](https://github.com/LiuX2018/On-computational-optics)**.
 
