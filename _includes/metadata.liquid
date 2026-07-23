@@ -15,6 +15,13 @@
 {% endif %}
 
 {% capture author_name %}{{ site.first_name }}{% if site.middle_name %} {{ site.middle_name }}{% endif %} {{ site.last_name }}{% endcapture %}
+{% assign meta_description = page.description | default: site.description | strip_html | strip_newlines | strip %}
+{% assign meta_keywords = page.keywords | default: site.keywords | strip_html | strip_newlines | strip %}
+{% assign social_image = page.og_image | default: site.og_image %}
+{% if social_image %}
+  {% assign social_image_url = social_image | absolute_url %}
+{% endif %}
+{% assign social_image_alt = page.og_image_alt | default: 'Xin Liu — Computational Optics Researcher at the University of Hong Kong' %}
 
 <!-- Standard metadata -->
 <meta charset="utf-8">
@@ -39,9 +46,9 @@
   {% endif %}
 </title>
 <meta name="author" content="{{ author_name }}">
-<meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
-{% if page.keywords or site.keywords %}
-  <meta name="keywords" content="{% if page.keywords %}{{ page.keywords }}{% else %}{{ site.keywords }}{% endif %}">
+<meta name="description" content="{{ meta_description | escape }}">
+{% if meta_keywords %}
+  <meta name="keywords" content="{{ meta_keywords | escape }}">
 {% endif %}
 
 {% assign is_blog_post = false %}
@@ -57,18 +64,24 @@
   <meta property="og:type" content="{% if is_blog_post %}article{% else %}website{% endif %}">
   <meta property="og:title" content="{% if page.title %}{{ title }} | {{ page.title }}{% else %}{{ title }}{% endif %}">
   <meta property="og:url" content="{{ page.url | prepend: site.baseurl | prepend: site.url | remove_first: 'index.html' }}">
-  <meta property="og:description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
-  {% if page.og_image or site.og_image %}
-    <meta property="og:image" content="{% if page.og_image %}{{ page.og_image }}{% else %}{{ site.og_image }}{% endif %}">
+  <meta property="og:description" content="{{ meta_description | escape }}">
+  {% if social_image_url %}
+    <meta property="og:image" content="{{ social_image_url }}">
+    <meta property="og:image:secure_url" content="{{ social_image_url }}">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="{{ social_image_alt | escape }}">
   {% endif %}
   <meta property="og:locale" content="{{ site.lang }}">
 
   <!-- Twitter card -->
-  <meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{% if page.title %}{{ page.title }}{% else %}{{ title }}{% endif %}">
-  <meta name="twitter:description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
-  {% if page.og_image or site.og_image %}
-    <meta name="twitter:image" content="{% if page.og_image %}{{ page.og_image }}{% else %}{{ site.og_image }}{% endif %}">
+  <meta name="twitter:description" content="{{ meta_description | escape }}">
+  {% if social_image_url %}
+    <meta name="twitter:image" content="{{ social_image_url }}">
+    <meta name="twitter:image:alt" content="{{ social_image_alt | escape }}">
   {% endif %}
   {% if site.x_username %}
     <meta name="twitter:site" content="@{{ site.x_username }}">
@@ -80,12 +93,17 @@
   <!-- Schema.org -->
   {% comment %} Social links generator for "sameAs schema" {% endcomment %}
   {% assign sameaslinks = '' | split: ',' %}
-  {% if site.orcid_id %}
-    {% capture link %}https://orcid.org/{{ site.orcid_id }}{% endcapture %}
+  {% assign schema_orcid_id = site.orcid_id | default: site.data.socials.orcid_id %}
+  {% assign schema_scholar_userid = site.scholar_userid | default: site.data.socials.scholar_userid %}
+  {% assign schema_research_gate_profile = site.research_gate_profile | default: site.data.socials.research_gate_profile %}
+  {% assign schema_github_username = site.github_username | default: site.data.socials.github_username %}
+  {% assign schema_linkedin_username = site.linkedin_username | default: site.data.socials.linkedin_username %}
+  {% if schema_orcid_id %}
+    {% capture link %}https://orcid.org/{{ schema_orcid_id }}{% endcapture %}
     {% assign sameaslinks = sameaslinks | push: link %}
   {% endif %}
-  {% if site.scholar_userid %}
-    {% capture link %}https://scholar.google.com/citations?user={{ site.scholar_userid }}{% endcapture %}
+  {% if schema_scholar_userid %}
+    {% capture link %}https://scholar.google.com/citations?user={{ schema_scholar_userid }}{% endcapture %}
     {% assign sameaslinks = sameaslinks | push: link %}
   {% endif %}
   {% if site.semanticscholar_id %}
@@ -104,24 +122,24 @@
     {% capture link %}https://osf.io/{{ site.osf_id }}/{% endcapture %}
     {% assign sameaslinks = sameaslinks | push: link %}
   {% endif %}
-  {% if site.research_gate_profile %}
-    {% capture link %}https://www.researchgate.net/profile/{{ site.research_gate_profile }}{% endcapture %}
+  {% if schema_research_gate_profile %}
+    {% capture link %}https://www.researchgate.net/profile/{{ schema_research_gate_profile }}{% endcapture %}
     {% assign sameaslinks = sameaslinks | push: link %}
   {% endif %}
   {% if site.scopus_id %}
     {% capture link %}https://www.scopus.com/authid/detail.uri?authorId={{ site.scopus_id }}{% endcapture %}
     {% assign sameaslinks = sameaslinks | push: link %}
   {% endif %}
-  {% if site.github_username %}
-    {% capture link %}https://github.com/{{ site.github_username }}{% endcapture %}
+  {% if schema_github_username %}
+    {% capture link %}https://github.com/{{ schema_github_username }}{% endcapture %}
     {% assign sameaslinks = sameaslinks | push: link %}
   {% endif %}
   {% if site.telegram_username %}
     {% capture link %}https://telegram.me/{{ site.telegram_username }}{% endcapture %}
     {% assign sameaslinks = sameaslinks | push: link %}
   {% endif %}
-  {% if site.linkedin_username %}
-    {% capture link %}https://www.linkedin.com/in/{{ site.linkedin_username }}{% endcapture %}
+  {% if schema_linkedin_username %}
+    {% capture link %}https://www.linkedin.com/in/{{ schema_linkedin_username }}{% endcapture %}
     {% assign sameaslinks = sameaslinks | push: link %}
   {% endif %}
   {% if site.x_username %}
@@ -216,26 +234,22 @@
     {% capture link %}https://www.zotero.org/{{ site.zotero_username }}{% endcapture %}
     {% assign sameaslinks = sameaslinks | push: link %}
   {% endif %}
-  {% if sameaslinks != blank %}
-    {% assign sameaslinks = sameaslinks | split: '' %}
-  {% endif %}
-
   <script type="application/ld+json">
     {
-        "author":
-        {
-            "@type": "Person",
-            "name": "{{ author_name }}"
-        },
-        "url": "{{ page.url | prepend: site.baseurl | prepend: site.url }}",
-        "@type": "{% if is_blog_post %}BlogPosting{% else %}WebSite{% endif %}",
-        "description": "{% if page.description %}{{ page.description }}{% else if site.description %}{{ site.description }}{% endif %}",
-        "headline": "{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}",
-        {% if sameaslinks != blank %}
-        "sameAs": {{ sameaslinks }},
-        {% endif %}
-        "name": "{{ author_name }}",
-        "@context": "https://schema.org"
+      "@context": "https://schema.org",
+      "@type": "{% if is_blog_post %}BlogPosting{% else %}WebSite{% endif %}",
+      "name": {{ author_name | jsonify }},
+      "headline": {% if page.title %}{{ page.title | jsonify }}{% else %}{{ site.title | jsonify }}{% endif %},
+      "url": {{ page.url | prepend: site.baseurl | prepend: site.url | jsonify }},
+      "description": {{ meta_description | jsonify }},
+      {% if social_image_url %}
+        "image": {{ social_image_url | jsonify }},
+      {% endif %}
+      "author": {
+        "@type": "Person",
+        "name": {{ author_name | jsonify }}{% if sameaslinks != blank %},
+        "sameAs": {{ sameaslinks | jsonify }}{% endif %}
+      }
     }
   </script>
 {% endif %}
