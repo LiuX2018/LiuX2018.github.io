@@ -2,11 +2,10 @@
 layout: page
 permalink: /publications/
 title: Publications
-description: <sup>*</sup>Equal contribution; <sup>✉</sup>Correspondence.
+description: <sup>*</sup>Equal contribution; <sup>✉</sup>Corresponding author.
 nav: true
 nav_order: 2
 ---
-
 <!-- _pages/publications.md -->
 
 <!-- Bibsearch Feature -->
