@@ -744,7 +744,7 @@ footer.sticky-bottom {
     margin-top: 0;
 
     li {
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
 
       .preview {
       }
@@ -773,17 +773,31 @@ footer.sticky-bottom {
       }
 
       .title {
-        font-weight: bolder;
+        font-size: 1.1rem;
+        font-weight: 600;
+        line-height: 1.4;
+        margin-bottom: 0.25rem;
       }
 
       .author {
+        color: var(--global-text-color-light);
+        font-size: 0.9rem;
+        line-height: 1.45;
+        margin-bottom: 0.15rem;
+
         a {
-          border-bottom: 1px dashed var(--global-theme-color);
+          color: inherit;
+          border-bottom: 1px dashed currentColor;
 
           &:hover {
+            color: var(--global-theme-color);
             border-bottom-style: solid;
             text-decoration: none;
           }
+        }
+
+        > strong {
+          color: var(--global-text-color);
         }
 
         > em {
@@ -803,7 +817,26 @@ footer.sticky-bottom {
         }
       }
 
+      .periodical {
+        color: var(--global-text-color);
+        font-size: 0.9rem;
+        line-height: 1.45;
+      }
+
+      > .row > .periodical {
+        color: var(--global-theme-color) !important;
+        font-size: 0.875rem;
+        font-weight: 400;
+        margin-top: 0.15rem;
+
+        strong {
+          font-weight: 500;
+        }
+      }
+
       .links {
+        margin-top: 0.45rem;
+
         a.btn {
           color: var(--global-text-color);
           border: 1px solid var(--global-text-color);
@@ -812,6 +845,8 @@ footer.sticky-bottom {
           padding-top: 0.25rem;
           padding-bottom: 0.25rem;
           margin-left: 0;
+          margin-right: 0.25rem;
+          margin-bottom: 0.25rem;
 
           &:hover {
             color: var(--global-theme-color);
@@ -878,6 +913,17 @@ footer.sticky-bottom {
         border-color: var(--global-text-color);
       }
     }
+
+    @media (max-width: 575.98px) {
+      li {
+        margin-bottom: 1.25rem;
+
+        .title {
+          font-size: 1rem;
+        }
+      }
+    }
+
     div.award.hidden {
       border: dashed 1px var(--global-bg-color);
     }
