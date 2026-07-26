@@ -17,23 +17,29 @@
 {% capture author_name %}{{ site.first_name }}{% if site.middle_name %} {{ site.middle_name }}{% endif %} {{ site.last_name }}{% endcapture %}
 {% assign meta_description = page.description | default: site.description | strip_html | strip_newlines | strip %}
 {% assign meta_keywords = page.keywords | default: site.keywords | strip_html | strip_newlines | strip %}
+{% assign meta_title = page.seo_title %}
+{% if page.url == '/' and site.homepage_title %}
+  {% assign meta_title = site.homepage_title %}
+{% endif %}
 {% assign social_image = page.og_image | default: site.og_image %}
+{% if site.title == 'blank' %}
+  {% capture title %}{{ author_name }}{% endcapture %}
+{% else %}
+  {% capture title %}{{ site.title }}{% endcapture %}
+{% endif %}
 {% if social_image %}
   {% assign social_image_url = social_image | absolute_url %}
 {% endif %}
-{% assign social_image_alt = page.og_image_alt | default: 'Xin Liu — Computational Optics Researcher at the University of Hong Kong' %}
+{% assign social_image_alt = page.og_image_alt | default: site.og_image_alt %}
 
 <!-- Standard metadata -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>
-  {% if site.title == 'blank' %}
-    {% capture title %}{{ author_name }}{% endcapture %}
-  {% else %}
-    {% capture title %}{{ site.title }}{% endcapture %}
-  {% endif %}
-  {% if page.url == '/blog/index.html' %}
+  {% if meta_title %}
+    {{ meta_title }}
+  {% elsif page.url == '/blog/index.html' %}
     {{ page.title }} | {{ title }}
   {% elsif page.title != 'blank' and page.url != '/' %}
     {% if page.title == null or page.title == '' %}
@@ -62,7 +68,7 @@
   <!-- OpenGraph -->
   <meta property="og:site_name" content="{{ title }}">
   <meta property="og:type" content="{% if is_blog_post %}article{% else %}website{% endif %}">
-  <meta property="og:title" content="{% if page.title %}{{ title }} | {{ page.title }}{% else %}{{ title }}{% endif %}">
+  <meta property="og:title" content="{% if meta_title %}{{ meta_title }}{% elsif page.title %}{{ title }} | {{ page.title }}{% else %}{{ title }}{% endif %}">
   <meta property="og:url" content="{{ page.url | prepend: site.baseurl | prepend: site.url | remove_first: 'index.html' }}">
   <meta property="og:description" content="{{ meta_description | escape }}">
   {% if social_image_url %}
@@ -77,7 +83,7 @@
 
   <!-- Twitter card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="{% if page.title %}{{ page.title }}{% else %}{{ title }}{% endif %}">
+  <meta name="twitter:title" content="{% if meta_title %}{{ meta_title }}{% elsif page.title %}{{ page.title }}{% else %}{{ title }}{% endif %}">
   <meta name="twitter:description" content="{{ meta_description | escape }}">
   {% if social_image_url %}
     <meta name="twitter:image" content="{{ social_image_url }}">
@@ -247,7 +253,14 @@
       {% endif %}
       "author": {
         "@type": "Person",
-        "name": {{ author_name | jsonify }}{% if sameaslinks != blank %},
+        "name": {{ author_name | jsonify }},
+        "url": {{ site.url | append: site.baseurl | append: "/" | jsonify }}{% if site.schema_person.job_title %},
+        "jobTitle": {{ site.schema_person.job_title | jsonify }}{% endif %}{% if site.schema_person.affiliation.name %},
+        "affiliation": {
+          "@type": "Organization",
+          "name": {{ site.schema_person.affiliation.name | jsonify }}{% if site.schema_person.affiliation.url %},
+          "url": {{ site.schema_person.affiliation.url | jsonify }}{% endif %}
+        }{% endif %}{% if sameaslinks != blank %},
         "sameAs": {{ sameaslinks | jsonify }}{% endif %}
       }
     }

@@ -1,12 +1,22 @@
 ---
-layout: cv
-# permalink: /cv/
-permalink: /assets/pdf/CV_Xin_Liu.pdf
+layout: page
+permalink: /cv/
 title: CV
 nav: true
 nav_order: 5
-cv_pdf: https://github.com/LiuX2018/CV/blob/master/CV_Xin_Liu.pdf # you can also use external links here
-# description: This is a description of the page. You can modify it in 'assets/json/resume.json'. You can also change or remove the top pdf download button.
-toc:
-  sidebar: left
+description: Curriculum vitae of Xin Liu, a computational optics researcher at the University of Hong Kong.
 ---
+
+<p>
+  <a href="{{ '/assets/pdf/CV_Xin_Liu.pdf' | relative_url }}" target="_blank" rel="noopener noreferrer">
+    Open or download the PDF version
+  </a>
+</p>
+
+<iframe
+  src="{{ '/assets/pdf/CV_Xin_Liu.pdf' | relative_url }}"
+  title="Curriculum vitae of Xin Liu"
+  width="100%"
+  height="1100"
+  style="border: 0"
+></iframe>

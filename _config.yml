@@ -12,6 +12,7 @@
 # -----------------------------------------------------------------------------
 
 title: Xin Liu # the website title (if blank, full name will be used instead)
+homepage_title: Xin Liu (刘鑫) | Computational Optics Researcher
 first_name: Xin
 middle_name:
 last_name: Liu (刘鑫)
@@ -28,7 +29,7 @@ lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
 # icon: ⚛️ # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
 icon: Airy_disk_gray.png
 
-url: https://LiuX2018.github.io # the base hostname & protocol for your site
+url: https://liux2018.github.io # the base hostname & protocol for your site
 baseurl: # the subpath of your site, e.g. /blog/. Leave blank for root
 last_updated: true # set to true if you want to display last updated in the footer
 impressum_path: # set to path to include impressum link in the footer, use the same path as permalink in a page, helps to conform with EU GDPR
@@ -54,7 +55,7 @@ repo_trophies:
 # will use title and url fields
 # Take a look to https://github.com/jekyll/jekyll-feed for more customization
 
-rss_icon: true
+rss_icon: false
 
 # -----------------------------------------------------------------------------
 # Layout
@@ -79,6 +80,13 @@ max_width: 930px
 serve_og_meta: true # Include Open Graph meta tags in the HTML head
 serve_schema_org: true # Include Schema.org in the HTML head
 og_image: https://liux2018.github.io/assets/img/xin-liu-social-card.png # The site-wide (default for all links) Open Graph preview image
+og_image_alt: Xin Liu — Computational Optics Researcher at the University of Hong Kong
+
+schema_person:
+  job_title: Postdoctoral Researcher in Computational Optics
+  affiliation:
+    name: The University of Hong Kong
+    url: https://www.hku.hk/
 
 # -----------------------------------------------------------------------------
 # Analytics and search engine verification
@@ -131,17 +139,6 @@ giscus:
 disqus_shortname: al-folio # put your disqus shortname
 # https://help.disqus.com/en/articles/1717111-what-s-a-shortname
 
-# External sources.
-# If you have blog posts published on medium.com or other external sources,
-# you can display them in your blog by adding a link to the RSS feed.
-external_sources:
-  - name: medium.com
-    rss_url: https://medium.com/@al-folio/feed
-  - name: Google Blog
-    posts:
-      - url: https://blog.google/technology/ai/google-gemini-update-flash-ai-assistant-io-2024/
-        published_date: 2024-05-14
-
 # -----------------------------------------------------------------------------
 # Newsletter
 # -----------------------------------------------------------------------------
@@ -159,10 +156,10 @@ collections:
   news:
     defaults:
       layout: post
-    output: true
+    output: false
     permalink: /:collection/:title/
   projects:
-    output: true
+    output: false
     permalink: /:collection/:title/
 
 announcements:
@@ -220,15 +217,12 @@ keep_files:
 
 # Plug-ins
 plugins:
-  - jekyll-archives
   - jekyll-email-protect
-  - jekyll-feed
   - jekyll-get-json
   - jekyll-imagemagick
   - jekyll-jupyter-notebook
   - jekyll-link-attributes
   - jekyll-minifier
-  - jekyll-paginate-v2
   - jekyll-regex-replace
   - jekyll/scholar
   - jekyll-sitemap
@@ -240,8 +234,18 @@ plugins:
 # Sitemap settings
 defaults:
   - scope:
+      path: "googledd5aeb2468f1b4f5.html"
+    values:
+      sitemap: false
+  - scope:
       path: "assets"
     values:
+      sitemap: false
+  - scope:
+      path: ""
+      type: posts
+    values:
+      published: false
       sitemap: false
 
 sass:
@@ -395,7 +399,7 @@ enable_google_analytics: false # enables google analytics
 enable_cronitor_analytics: false # enables cronitor RUM analytics
 enable_pirsch_analytics: false # enables Pirsch analytics (https://pirsch.io/)
 enable_openpanel_analytics: false # enables Openpanel analytics (https://openpanel.dev/)
-enable_google_verification: false # enables google site verification
+enable_google_verification: true # enables google site verification
 enable_bing_verification: false # enables bing site verification
 enable_masonry: true # enables automatic project cards arrangement
 enable_math: true # enables math typesetting (uses MathJax)
