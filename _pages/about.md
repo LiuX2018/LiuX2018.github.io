@@ -2,7 +2,7 @@
 layout: about
 title: About
 permalink: /
-# subtitle: <a href='https://www.eee.hku.hk'>Department of Electrical and Electronic Engineering</a>.
+# subtitle: <a href='https://www.ece.hku.hk'>Department of Electrical and Computer Engineering</a>.
 subtitle: A light manipulator
 
 profile:

@@ -10,6 +10,7 @@ nav_order: 3
 {% if site.data.repositories.github_users %}
 
 {% if site.github_stats.enabled %}
+
 ## GitHub users
 
 <div class="repositories d-flex flex-wrap flex-md-row flex-column justify-content-between align-items-center">
@@ -19,6 +20,7 @@ nav_order: 3
 </div>
 
 ---
+
 {% endif %}
 
 {% if site.repo_trophies.enabled %}
