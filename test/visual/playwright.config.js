@@ -5,7 +5,7 @@ module.exports = defineConfig({
   testDir: __dirname,
   outputDir: "../../output/playwright/test-results",
   reporter: [["list"], ["html", { outputFolder: "../../output/playwright/report", open: "never" }]],
-  snapshotPathTemplate: "{testDir}/snapshots/{projectName}/{arg}{ext}",
+  snapshotPathTemplate: "{testDir}/snapshots/{platform}/{projectName}/{arg}{ext}",
   expect: {
     toHaveScreenshot: {
       animations: "disabled",
