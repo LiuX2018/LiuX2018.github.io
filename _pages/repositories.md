@@ -2,7 +2,10 @@
 layout: page
 permalink: /repositories/
 title: Software
-# description: Github repositories of Xin Liu
+meta_description: Open-source software by Xin Liu and collaborators for computational optics, diffraction modeling, and optical field simulation.
+schema_type: CollectionPage
+math: false
+publication_badges: false
 nav: true
 nav_order: 3
 ---

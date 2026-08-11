@@ -15,7 +15,7 @@
 {% endif %}
 
 {% capture author_name %}{{ site.first_name }}{% if site.middle_name %} {{ site.middle_name }}{% endif %} {{ site.last_name }}{% endcapture %}
-{% assign meta_description = page.description | default: site.description | strip_html | strip_newlines | strip %}
+{% assign meta_description = page.meta_description | default: page.description | default: site.description | strip_html | strip_newlines | strip %}
 {% assign meta_keywords = page.keywords | default: site.keywords | strip_html | strip_newlines | strip %}
 {% assign meta_title = page.seo_title %}
 {% if page.url == '/' and site.homepage_title %}
@@ -82,7 +82,7 @@
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="{{ social_image_alt | escape }}">
   {% endif %}
-  <meta property="og:locale" content="{{ site.lang }}">
+  <meta property="og:locale" content="{{ site.og_locale | default: site.lang }}">
 
   <!-- Twitter card -->
   <meta name="twitter:card" content="summary_large_image">
@@ -243,29 +243,70 @@
     {% capture link %}https://www.zotero.org/{{ site.zotero_username }}{% endcapture %}
     {% assign sameaslinks = sameaslinks | push: link %}
   {% endif %}
+  {% assign homepage_url = '/' | absolute_url %}
+  {% assign website_id = homepage_url | append: '#website' %}
+  {% assign person_id = homepage_url | append: '#person' %}
+  {% assign schema_page_url = page.url | replace: 'index.html', '' | absolute_url %}
+  {% assign schema_page_id = schema_page_url | append: '#webpage' %}
+  {% assign schema_page_type = page.schema_type | default: 'WebPage' %}
+  {% if is_blog_post %}
+    {% assign schema_page_type = 'BlogPosting' %}
+  {% endif %}
   <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "{% if is_blog_post %}BlogPosting{% else %}WebSite{% endif %}",
-      "name": {{ author_name | jsonify }},
-      "headline": {% if page.title %}{{ page.title | jsonify }}{% else %}{{ site.title | jsonify }}{% endif %},
-      "url": {{ page.url | prepend: site.baseurl | prepend: site.url | jsonify }},
-      "description": {{ meta_description | jsonify }},
-      {% if social_image_url %}
-        "image": {{ social_image_url | jsonify }},
-      {% endif %}
-      "author": {
-        "@type": "Person",
-        "name": {{ author_name | jsonify }},
-        "url": {{ site.url | append: site.baseurl | append: "/" | jsonify }}{% if site.schema_person.job_title %},
-        "jobTitle": {{ site.schema_person.job_title | jsonify }}{% endif %}{% if site.schema_person.affiliation.name %},
-        "affiliation": {
-          "@type": "Organization",
-          "name": {{ site.schema_person.affiliation.name | jsonify }}{% if site.schema_person.affiliation.url %},
-          "url": {{ site.schema_person.affiliation.url | jsonify }}{% endif %}
-        }{% endif %}{% if sameaslinks != blank %},
-        "sameAs": {{ sameaslinks | jsonify }}{% endif %}
+    {% if page.url == '/' %}
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": {{ website_id | jsonify }},
+            "url": {{ homepage_url | jsonify }},
+            "name": {{ site.title | jsonify }},
+            "description": {{ site.description | strip_html | strip_newlines | strip | jsonify }},
+            "inLanguage": {{ site.lang | jsonify }}
+          },
+          {
+            "@type": "ProfilePage",
+            "@id": {{ schema_page_id | jsonify }},
+            "url": {{ schema_page_url | jsonify }},
+            "name": {{ meta_title | default: page.title | jsonify }},
+            "headline": {{ page.title | jsonify }},
+            "description": {{ meta_description | jsonify }},
+            "inLanguage": {{ site.lang | jsonify }},
+            "isPartOf": { "@id": {{ website_id | jsonify }} },
+            "mainEntity": { "@id": {{ person_id | jsonify }} }
+          },
+          {
+            "@type": "Person",
+            "@id": {{ person_id | jsonify }},
+            "name": {{ author_name | jsonify }},
+            "url": {{ homepage_url | jsonify }},
+            "image": {{ site.schema_person.image | jsonify }}{% if site.schema_person.job_title %},
+            "jobTitle": {{ site.schema_person.job_title | jsonify }}{% endif %}{% if site.schema_person.affiliation.name %},
+            "affiliation": {
+              "@type": "Organization",
+              "name": {{ site.schema_person.affiliation.name | jsonify }}{% if site.schema_person.affiliation.url %},
+              "url": {{ site.schema_person.affiliation.url | jsonify }}{% endif %}
+            }{% endif %}{% if sameaslinks != blank %},
+            "sameAs": {{ sameaslinks | jsonify }}{% endif %}
+          }
+        ]
       }
-    }
+    {% else %}
+      {
+        "@context": "https://schema.org",
+        "@type": {{ schema_page_type | jsonify }},
+        "@id": {{ schema_page_id | jsonify }},
+        "url": {{ schema_page_url | jsonify }},
+        "name": {{ page.title | default: site.title | jsonify }},
+        "headline": {{ page.title | default: site.title | jsonify }},
+        "description": {{ meta_description | jsonify }},
+        "inLanguage": {{ site.lang | jsonify }}{% if social_image_url %},
+        "image": {{ social_image_url | jsonify }}{% endif %},
+        "isPartOf": { "@id": {{ website_id | jsonify }} },
+        "about": { "@id": {{ person_id | jsonify }} },
+        "author": { "@id": {{ person_id | jsonify }} }
+      }
+    {% endif %}
   </script>
 {% endif %}

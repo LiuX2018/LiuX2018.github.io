@@ -1,23 +1,18 @@
 name: Axe accessibility testing
 
 on:
-  # if you want to run this on every push uncomment the following lines
-  # push:
-  #   branches:
-  #     - master
-  #     - main
-  # pull_request:
-  #   branches:
-  #     - master
-  #     - main
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
     inputs:
       url:
         description: "URL to be checked (e.g.: blog/)"
         required: false
 
-env:
-  URL: ""
+permissions:
+  contents: read
 
 jobs:
   check:
@@ -25,12 +20,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.2.2"
+          ruby-version: "3.3.5"
           bundler-cache: true
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+          cache: pip
       - name: Update _config.yml ⚙️
         uses: fjogeleit/yaml-update-action@main
         with:
@@ -44,7 +49,7 @@ jobs:
       - name: Install and Build 🔧
         run: |
           sudo apt-get update && sudo apt-get install -y imagemagick
-          pip3 install --upgrade jupyter
+          pip3 install --upgrade nbconvert
           export JEKYLL_ENV=production
           bundle exec jekyll build
       - name: Purge unused CSS 🧹
@@ -67,8 +72,18 @@ jobs:
           npm install -g chromedriver@$CHROMIUM_VERSION
       - name: Run axe 🪓
         # https://github.com/dequelabs/axe-core-npm/tree/develop/packages/cli
+        env:
+          TARGET_URL: ${{ github.event.inputs.url || '' }}
         run: |
-          npm install -g @axe-core/cli
-          npm install -g http-server
-          http-server _site/ &
-          axe --chromedriver-path $(npm root -g)/chromedriver/bin/chromedriver http://localhost:8080/${{ github.event.inputs.url || env.URL }} --load-delay=1500 --exit
+          npm install -g @axe-core/cli http-server wait-on
+          http-server _site/ -p 8080 -c-1 > /tmp/axe-http-server.log 2>&1 &
+          wait-on http://localhost:8080/
+
+          paths=("/" "/news/" "/publications/" "/repositories/")
+          if [[ -n "$TARGET_URL" ]]; then
+            paths=("/${TARGET_URL#/}")
+          fi
+
+          for path in "${paths[@]}"; do
+            axe --chromedriver-path "$(npm root -g)/chromedriver/bin/chromedriver" "http://localhost:8080${path}" --load-delay=1500 --exit
+          done

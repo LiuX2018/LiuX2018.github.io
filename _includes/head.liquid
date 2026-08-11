@@ -1,14 +1,36 @@
 <!-- Metadata, OpenGraph and Schema.org -->
 {% include metadata.liquid %}
 
+<!-- Early connections for resources used on every public page -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preload" href="{{ '/assets/fonts/academicons.ttf' | relative_url }}" as="font" type="font/ttf" crossorigin>
+{% if page.url == '/' %}
+  <link
+    rel="preload"
+    as="image"
+    href="{{ '/assets/img/xin_recent_photo-800.webp' | relative_url }}"
+    imagesrcset="{{ '/assets/img/xin_recent_photo-480.webp' | relative_url }} 480w, {{ '/assets/img/xin_recent_photo-800.webp' | relative_url }} 800w, {{ '/assets/img/xin_recent_photo-1400.webp' | relative_url }} 1400w"
+    imagesizes="(min-width: 930px) 270px, (min-width: 576px) 30vw, 95vw"
+    fetchpriority="high"
+  >
+{% elsif page.url == '/publications/' %}
+  <link
+    rel="preload"
+    as="image"
+    href="{{ '/assets/img/publication_preview/2026_holo_path_tracer-800.webp' | relative_url }}"
+    imagesrcset="{{ '/assets/img/publication_preview/2026_holo_path_tracer-480.webp' | relative_url }} 480w, {{ '/assets/img/publication_preview/2026_holo_path_tracer-800.webp' | relative_url }} 800w, {{ '/assets/img/publication_preview/2026_holo_path_tracer-1400.webp' | relative_url }} 1400w"
+    imagesizes="800px"
+    fetchpriority="high"
+  >
+{% endif %}
+{% if page.publication_badges %}
+  <link rel="preconnect" href="https://d1bxh8uas1mnw7.cloudfront.net" crossorigin>
+  <link rel="preconnect" href="https://badge.dimensions.ai" crossorigin>
+{% endif %}
+
 <!-- Bootstrap & MDB -->
 <link rel="stylesheet" href="{{ '/assets/css/bootstrap.min.css' | relative_url | bust_file_cache }}">
-<link
-  rel="stylesheet"
-  href="{{ site.third_party_libraries.mdb.url.css }}"
-  integrity="{{ site.third_party_libraries.mdb.integrity.css }}"
-  crossorigin="anonymous"
->
+<link rel="stylesheet" href="{{ '/assets/css/mdb.min.css' | relative_url | bust_file_cache }}">
 
 <!-- Bootstrap Table -->
 {% if page.pretty_table %}
@@ -22,23 +44,23 @@
 {% endif %}
 
 <!-- Fonts & Icons -->
-<link defer rel="stylesheet" href="{{ '/assets/css/academicons.min.css' | relative_url | bust_file_cache }}">
-<link defer rel="stylesheet" href="{{ '/assets/css/scholar-icons.css' | relative_url | bust_file_cache }}">
 <link
-  defer
   rel="stylesheet"
-  type="text/css"
-  href="{{ site.third_party_libraries.google_fonts.url.fonts }}"
+  href="{{ '/assets/css/academicons.min.css' | relative_url | bust_file_cache }}"
+  media="print"
+  onload="this.media='all'"
 >
+<noscript><link rel="stylesheet" href="{{ '/assets/css/academicons.min.css' | relative_url | bust_file_cache }}"></noscript>
 
 <!-- Code Syntax Highlighting -->
-<link
-  defer
-  rel="stylesheet"
-  href="{{ '/assets/css/jekyll-pygments-themes-github.css' | relative_url | bust_file_cache }}"
-  media=""
-  id="highlight_theme_light"
->
+{% if page.code %}
+  <link
+    rel="stylesheet"
+    href="{{ '/assets/css/jekyll-pygments-themes-github.css' | relative_url | bust_file_cache }}"
+    media=""
+    id="highlight_theme_light"
+  >
+{% endif %}
 
 {% if page.toc and page.toc.sidebar %}
   <!-- Sidebar Table of Contents -->
@@ -70,17 +92,26 @@
 <link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
 
 <!-- Dark Mode -->
-<script src="{{ '/assets/js/theme.js' | relative_url | bust_file_cache }}"></script>
+<script>
+  (() => {
+    const setting = ['dark', 'light', 'system'].includes(localStorage.getItem('theme')) ? localStorage.getItem('theme') : 'system';
+    const theme = setting === 'system' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : setting;
+    document.documentElement.setAttribute('data-theme-setting', setting);
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
+</script>
+<script defer src="{{ '/assets/js/theme.js' | relative_url | bust_file_cache }}"></script>
 {% if site.enable_darkmode %}
-  <link
-    defer
-    rel="stylesheet"
-    href="{{ '/assets/css/jekyll-pygments-themes-native.css' | relative_url | bust_file_cache }}"
-    media="none"
-    id="highlight_theme_dark"
-  >
+  {% if page.code %}
+    <link
+      rel="stylesheet"
+      href="{{ '/assets/css/jekyll-pygments-themes-native.css' | relative_url | bust_file_cache }}"
+      media="none"
+      id="highlight_theme_dark"
+    >
+  {% endif %}
   <script>
-    initTheme();
+    document.addEventListener('DOMContentLoaded', () => initTheme());
   </script>
 {% endif %}
 

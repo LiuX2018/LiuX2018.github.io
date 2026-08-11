@@ -2,12 +2,18 @@
 layout: about
 title: About
 permalink: /
+schema_type: ProfilePage
+math: false
+publication_badges: false
 # subtitle: <a href='https://www.ece.hku.hk'>Department of Electrical and Computer Engineering</a>.
 subtitle: A light manipulator
 
 profile:
   align: left
   image: xin_recent_photo.png
+  image_alt: Portrait of Xin Liu
+  image_width: 1254
+  image_height: 1254
   image_circular: true # crops the image to make it circular
   # more_info: >
   #   <p>301 Haking Wong Building</p>

@@ -84,12 +84,16 @@ let applyTheme = () => {
 };
 
 let setHighlight = (theme) => {
+  const lightTheme = document.getElementById("highlight_theme_light");
+  const darkTheme = document.getElementById("highlight_theme_dark");
+  if (!lightTheme || !darkTheme) return;
+
   if (theme == "dark") {
-    document.getElementById("highlight_theme_light").media = "none";
-    document.getElementById("highlight_theme_dark").media = "";
+    lightTheme.media = "none";
+    darkTheme.media = "";
   } else {
-    document.getElementById("highlight_theme_dark").media = "none";
-    document.getElementById("highlight_theme_light").media = "";
+    darkTheme.media = "none";
+    lightTheme.media = "";
   }
 };
 
@@ -237,13 +241,18 @@ let initTheme = () => {
   setThemeSetting(themeSetting);
 
   // Add event listener to the theme toggle button.
-  document.addEventListener("DOMContentLoaded", function () {
+  const initializeToggle = () => {
     const mode_toggle = document.getElementById("light-toggle");
-
+    if (!mode_toggle) return;
     mode_toggle.addEventListener("click", function () {
       toggleThemeSetting();
     });
-  });
+  };
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializeToggle);
+  } else {
+    initializeToggle();
+  }
 
   // Add event listener to the system theme preference change.
   window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
