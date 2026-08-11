@@ -18,6 +18,7 @@ Open <http://localhost:8080>. The container mounts the repository and serves Jek
 docker compose run --rm -e JEKYLL_ENV=production jekyll bundle exec jekyll build
 docker compose run --rm jekyll ruby scripts/check_publication_previews.rb
 docker compose run --rm jekyll ruby scripts/validate_built_site.rb
+docker compose run --rm jekyll ruby scripts/check_internal_links.rb
 npm ci
 npm run lint:prettier
 npm run lint:style-contract
