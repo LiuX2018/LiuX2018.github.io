@@ -1,0 +1,150 @@
+:root {
+  --global-theme-color: #008005;
+  --global-hover-color: #008005;
+  --global-text-color-light: #686868;
+}
+
+html,
+body,
+button,
+input,
+select,
+textarea {
+  font-family: Arial, "Segoe UI", sans-serif;
+}
+
+.post-title,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+strong,
+.font-weight-bold {
+  font-weight: 700;
+}
+
+em {
+  font-style: italic;
+}
+
+.publication-legend {
+  color: var(--global-text-color-light);
+  margin-bottom: 1rem;
+}
+
+.repositories .repo a,
+.repositories .repo img {
+  aspect-ratio: 495 / 195;
+}
+
+.repositories .repo a {
+  display: block;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.repositories .repo {
+  display: block !important;
+}
+
+.repositories .repo a::before {
+  align-items: center;
+  background: var(--global-card-bg-color);
+  color: var(--global-text-color-light);
+  content: "Open repository on GitHub";
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  position: absolute;
+}
+
+.repositories .repo img {
+  display: block;
+  height: auto;
+  object-fit: cover;
+  position: relative;
+  width: 100%;
+  z-index: 1;
+}
+
+.publications {
+  margin-top: 1.25rem;
+
+  h2.year {
+    margin-bottom: 1rem;
+  }
+
+  h2.bibliography {
+    color: var(--global-text-color-light);
+  }
+
+  ol.bibliography > li {
+    margin-bottom: 2rem;
+  }
+
+  .abbr {
+    min-width: 210px;
+  }
+
+  .abbr abbr {
+    margin-bottom: 0.75rem;
+  }
+
+  .abbr .preview {
+    height: 150px;
+    max-height: none;
+    max-width: 200px;
+    object-fit: contain;
+    width: 100%;
+  }
+
+  .badges {
+    min-height: 2rem;
+  }
+
+  .title {
+    font-weight: 700;
+  }
+
+  .author strong {
+    font-weight: 700;
+  }
+
+  .periodical + .periodical:not(:empty) {
+    color: var(--global-theme-color);
+    font-weight: 700;
+    margin-top: 0.25rem;
+  }
+
+  .links .award {
+    font-weight: 700;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .publications .abbr {
+    min-width: 100%;
+  }
+
+  .publications .abbr .preview {
+    height: 220px;
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 768px) {
+  .repositories .repo {
+    flex: 0 0 50%;
+    width: 50%;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .repositories .repo {
+    flex: 0 0 100%;
+    width: 100%;
+  }
+}

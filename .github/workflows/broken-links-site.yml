@@ -1,55 +1,46 @@
-name: Check for broken links on site
+name: Check internal links
 
 on:
-  workflow_run:
-    workflows: [Deploy site]
-    types: [completed]
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
-  check-links-on-site:
-    # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#running-a-workflow-based-on-the-conclusion-of-another-workflow
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    # available images: https://github.com/actions/runner-images#available-images
+  internal-links:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@v5
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
+      - uses: actions/checkout@v5
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.3.5"
           bundler-cache: true
-      - name: Setup Python
-        uses: actions/setup-python@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.13"
           cache: pip
-      - name: Update _config.yml ⚙️
-        uses: fjogeleit/yaml-update-action@main
-        with:
-          commitChange: false
-          valueFile: "_config.yml"
-          changes: |
-            {
-              "giscus.repo": "${{ github.repository }}",
-              "baseurl": ""
-            }
-      - name: Install and Build 🔧
+      - name: Build and validate
+        env:
+          JEKYLL_ENV: production
         run: |
-          sudo apt-get update && sudo apt-get install -y imagemagick
-          pip3 install --upgrade nbconvert
+          sudo apt-get update
+          sudo apt-get install -y imagemagick
+          python -m pip install -r requirements.txt
+          npm ci
           ruby scripts/check_publication_previews.rb
-          export JEKYLL_ENV=production
           bundle exec jekyll build
-      - name: Purge unused CSS 🧹
-        run: |
-          npm install -g purgecss
-          purgecss -c purgecss.config.js
-      - name: Validate built site
-        run: bundle exec ruby scripts/validate_built_site.rb
-      - name: Link Checker 🔗
+          npx --yes purgecss@7 -c purgecss.config.js
+          bundle exec ruby scripts/validate_built_site.rb
+      - name: Check generated links
         uses: lycheeverse/lychee-action@v2.1.0
         with:
           fail: true
-          # only check local links
-          args: --offline --remap '_site(/?.*)/assets/(.*) _site/assets/$2' --verbose --no-progress '_site/**/*.html'
+          args: --offline --root-dir _site --verbose --no-progress '_site/**/*.html'

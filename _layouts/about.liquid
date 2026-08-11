@@ -37,7 +37,7 @@ layout: default
     <div class="clearfix">{{ content }}</div>
 
     <!-- News -->
-    {% if page.news and site.announcements.enabled %}
+    {% if page.announcements and page.announcements.enabled %}
       <h2>
         <a href="{{ '/news/' | relative_url }}" style="color: inherit">News</a>
       </h2>
@@ -45,7 +45,7 @@ layout: default
     {% endif %}
 
     <!-- Latest posts -->
-    {% if site.latest_posts.enabled %}
+    {% if page.latest_posts and page.latest_posts.enabled %}
       <h2>
         <a href="{{ '/blog/' | relative_url }}" style="color: inherit">latest posts</a>
       </h2>
@@ -57,20 +57,25 @@ layout: default
       <h2>
         <a href="{{ '/publications/' | relative_url }}" style="color: inherit">Selected Publications</a>
       </h2>
-      <p><sup>*</sup>Equal contribution; <sup>✉</sup>Corresponding author.</p>
+      <p class="publication-legend"><sup>*</sup>Equal contribution; <sup>✉</sup>Corresponding author.</p>
       {% include selected_papers.liquid %}
     {% endif %}
 
     <!-- Social -->
     {% if page.social %}
       <div class="social">
-        <div class="contact-icons">{% include social.liquid %}</div>
+        <div class="contact-icons">{% social_links %}</div>
+
         <div class="contact-note">{{ site.contact_note }}</div>
       </div>
     {% endif %}
 
-    {% if site.newsletter.enabled and site.footer_fixed %}
-      {% include scripts/newsletter.liquid center=true %}
+    {% if site.newsletter and site.newsletter.enabled and site.footer_fixed %}
+      {% if site.plugins contains 'al_newsletter' %}
+        {% include plugins/al_newsletter_form_center_margin.liquid %}
+      {% else %}
+        {% include newsletter.liquid center=true %}
+      {% endif %}
     {% endif %}
   </article>
 </div>

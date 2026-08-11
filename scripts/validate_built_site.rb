@@ -4,6 +4,7 @@ require "cgi"
 require "json"
 require "nokogiri"
 require "uri"
+require "yaml"
 
 site_directory = File.expand_path("../_site", __dir__)
 origin = "https://liux2018.github.io"
@@ -15,6 +16,26 @@ pages = {
 }
 errors = []
 descriptions = []
+
+source_root = File.expand_path("..", __dir__)
+news_files = Dir[File.join(source_root, "_news", "*.md")]
+bibliography_source = File.read(File.join(source_root, "_bibliography", "papers.bib"))
+publication_count = bibliography_source.scan(/^@\w+\s*[{(]/).length
+selected_publication_count = bibliography_source.scan(/^\s*selected\s*=\s*[{\"]true[}\"]/i).length
+preview_count = bibliography_source.scan(/^\s*preview\s*=\s*[{\"][^}\"]+[}\"]/i).length
+repositories = YAML.safe_load(File.read(File.join(source_root, "_data", "repositories.yml")), aliases: true)
+repository_count = repositories.fetch("github_repos", []).length
+
+expected_source_counts = {
+  "news items" => [news_files.length, 9],
+  "publications" => [publication_count, 26],
+  "selected publications" => [selected_publication_count, 12],
+  "publication previews" => [preview_count, 26],
+  "software repositories" => [repository_count, 6]
+}
+expected_source_counts.each do |label, (actual, expected)|
+  errors << "Source has #{actual} #{label}; expected #{expected}" unless actual == expected
+end
 
 unless Dir.exist?(site_directory)
   abort "Build output not found at #{site_directory}. Run a production build first."
@@ -67,6 +88,10 @@ documents.each do |route, document|
   errors << "#{route} CV navigation does not link directly to the PDF" unless cv_links.first&.[]("href") == "/assets/pdf/CV_Xin_Liu.pdf"
   errors << "#{route} still links to /cv/" if document.css('a[href="/cv/"], a[href^="/cv/?"], a[href^="/cv/#"]').any?
 
+  nav_labels = document.css("#navbarNav a.nav-link").map { |link| link.text.gsub("(current)", "").strip }.reject(&:empty?)
+  expected_nav_labels = ["About", "Publications", "Software", "CV"]
+  errors << "#{route} navigation is #{nav_labels.inspect}; expected #{expected_nav_labels.inspect}" unless nav_labels == expected_nav_labels
+
   html = document.to_html
   errors << "#{route} still loads MathJax" if html.match?(/mathjax/i)
   badge_scripts = html.match?(/d1bxh8uas1mnw7\.cloudfront\.net|badge\.dimensions\.ai/)
@@ -87,6 +112,30 @@ documents.each do |route, document|
   end
 end
 
+if (homepage = documents["/"])
+  homepage_selected_count = homepage.css(".publications ol.bibliography > li").length
+  errors << "Homepage renders #{homepage_selected_count} selected publications; expected 12" unless homepage_selected_count == 12
+  errors << "Homepage profile image is missing" unless homepage.at_css('.profile img[alt="Portrait of Xin Liu"]')
+  errors << "Homepage does not preload its profile image" unless homepage.at_css('link[rel="preload"][as="image"][href*="xin_recent_photo.png"]')
+end
+
+if (news_document = documents["/news/"])
+  built_news_count = news_document.css(".news table tr").length
+  errors << "News page renders #{built_news_count} items; expected 9" unless built_news_count == 9
+end
+
+if (publications_document = documents["/publications/"])
+  built_publication_count = publications_document.css(".publications ol.bibliography > li").length
+  built_preview_count = publications_document.css(".publications img.preview, .publications video.preview").length
+  errors << "Publications page renders #{built_publication_count} entries; expected 26" unless built_publication_count == 26
+  errors << "Publications page renders #{built_preview_count} previews; expected 26" unless built_preview_count == 26
+end
+
+if (repositories_document = documents["/repositories/"])
+  built_repository_count = repositories_document.css(".repositories .repo").length
+  errors << "Software page renders #{built_repository_count} repository cards; expected 6" unless built_repository_count == 6
+end
+
 errors << "Page descriptions are not unique" unless descriptions.uniq.length == pages.length
 
 pdf_path = File.join(site_directory, "assets/pdf/CV_Xin_Liu.pdf")
@@ -96,6 +145,18 @@ elsif File.binread(pdf_path, 4) != "%PDF"
   errors << "CV file does not have a PDF signature"
 end
 errors << "/cv/ was generated but must return 404" if File.exist?(File.join(site_directory, "cv"))
+errors << "feed.xml was generated even though the blog is disabled" if File.exist?(File.join(site_directory, "feed.xml"))
+
+%w[blog projects people teaching dropdown].each do |demo_route|
+  errors << "/#{demo_route}/ was generated but template examples must stay removed" if File.exist?(File.join(site_directory, demo_route))
+end
+
+Dir.glob(File.join(site_directory, "**", "*"), File::FNM_DOTMATCH).select { |path| File.file?(path) }.each do |path|
+  next unless File.extname(path).match?(/\A\.(?:html|css|js|json)\z/i)
+
+  contents = File.read(path)
+  errors << "#{path.delete_prefix("#{site_directory}/")} references vulnerable Swiper 10/11" if contents.match?(/swiper(?:@|\/)(?:10|11)\./i)
+end
 
 sitemap_path = File.join(site_directory, "sitemap.xml")
 if File.file?(sitemap_path)

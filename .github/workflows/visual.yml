@@ -1,8 +1,6 @@
-name: Axe accessibility testing
+name: Visual contract
 
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -11,7 +9,7 @@ permissions:
   contents: read
 
 jobs:
-  axe:
+  screenshots:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -27,7 +25,7 @@ jobs:
         with:
           python-version: "3.13"
           cache: pip
-      - name: Build production site
+      - name: Build and install browser
         env:
           JEKYLL_ENV: production
         run: |
@@ -37,5 +35,14 @@ jobs:
           npm ci
           bundle exec jekyll build
           npx --yes purgecss@7 -c purgecss.config.js
-      - name: Run Axe on public pages
-        run: npx playwright test --config test/accessibility/playwright.config.js
+      - name: Compare desktop/mobile and light/dark views
+        run: npm run test:visual
+      - name: Upload visual report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-report
+          path: |
+            output/playwright/
+            test-results/
+          retention-days: 14
