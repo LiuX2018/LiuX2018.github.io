@@ -5,7 +5,8 @@ require "nokogiri"
 require "pathname"
 require "uri"
 
-site_directory = File.expand_path("../_site", __dir__)
+source_root = File.expand_path("..", __dir__)
+site_directory = File.expand_path(ENV.fetch("SITE_DIR", "_site"), source_root)
 abort "Build output not found at #{site_directory}. Run a production build first." unless Dir.exist?(site_directory)
 
 errors = []

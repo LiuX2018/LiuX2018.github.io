@@ -46,9 +46,36 @@ nav_order: 3
 
 ## GitHub Repositories
 
-<div class="repositories d-flex flex-wrap flex-md-row flex-column justify-content-between align-items-center">
+<div class="repositories d-flex flex-wrap flex-md-row flex-column align-items-stretch">
   {% for repo in site.data.repositories.github_repos %}
-    {% include repository/repo.liquid repository=repo %}
+    {% assign repository_parts = repo.repository | split: '/' %}
+    {% assign repository_owner = repository_parts[0] %}
+    {% assign repository_name = repository_parts[1] %}
+    <div class="repo p-2">
+      <a
+        class="repository-card"
+        href="https://github.com/{{ repo.repository }}"
+        aria-label="Open {{ repo.repository }} on GitHub"
+      >
+        <h3 class="repository-heading">
+          <span class="repository-owner">{{ repository_owner }}/</span><span class="repository-name">{{ repository_name }}</span>
+        </h3>
+        {% if repo.description and repo.description != empty %}
+          <p class="repository-description">{{ repo.description }}</p>
+        {% endif %}
+        <div class="repository-meta">
+          {% if repo.language and repo.language != empty %}
+            <span class="repository-language">{{ repo.language }}</span>
+          {% endif %}
+          <span class="repository-stat">
+            {{ repo.stars }} {% if repo.stars == 1 %}star{% else %}stars{% endif %}
+          </span>
+          <span class="repository-stat">
+            {{ repo.forks }} {% if repo.forks == 1 %}fork{% else %}forks{% endif %}
+          </span>
+        </div>
+      </a>
+    </div>
   {% endfor %}
 </div>
 {% endif %}

@@ -1,8 +1,10 @@
+const siteDirectory = process.env.SITE_DIR || "_site";
+
 module.exports = {
-  content: ["_site/**/*.html", "_site/**/*.js"],
-  css: ["_site/assets/css/*.css"],
-  output: "_site/assets/css/",
-  skippedContentGlobs: ["_site/assets/**/*.html"],
+  content: [`${siteDirectory}/**/*.html`, `${siteDirectory}/**/*.js`],
+  css: [`${siteDirectory}/assets/css/*.css`],
+  output: `${siteDirectory}/assets/css/`,
+  skippedContentGlobs: [`${siteDirectory}/assets/**/*.html`],
   safelist: [
     "collapse",
     "collapsing",

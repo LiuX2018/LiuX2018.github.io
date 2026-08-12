@@ -6,7 +6,8 @@ require "nokogiri"
 require "uri"
 require "yaml"
 
-site_directory = File.expand_path("../_site", __dir__)
+source_root = File.expand_path("..", __dir__)
+site_directory = File.expand_path(ENV.fetch("SITE_DIR", "_site"), source_root)
 origin = "https://liux2018.github.io"
 pages = {
   "/" => "index.html",
@@ -17,14 +18,34 @@ pages = {
 errors = []
 descriptions = []
 
-source_root = File.expand_path("..", __dir__)
 news_files = Dir[File.join(source_root, "_news", "*.md")]
 bibliography_source = File.read(File.join(source_root, "_bibliography", "papers.bib"))
 publication_count = bibliography_source.scan(/^@\w+\s*[{(]/).length
 selected_publication_count = bibliography_source.scan(/^\s*selected\s*=\s*[{\"]true[}\"]/i).length
 preview_count = bibliography_source.scan(/^\s*preview\s*=\s*[{\"][^}\"]+[}\"]/i).length
 repositories = YAML.safe_load(File.read(File.join(source_root, "_data", "repositories.yml")), aliases: true)
-repository_count = repositories.fetch("github_repos", []).length
+repository_entries = repositories.fetch("github_repos", [])
+repository_count = repository_entries.length
+repository_fields = %w[repository description language stars forks]
+repository_entries.each_with_index do |entry, index|
+  unless entry.is_a?(Hash)
+    errors << "Software repository #{index + 1} is not a mapping"
+    next
+  end
+
+  missing_fields = repository_fields - entry.keys
+  errors << "Software repository #{index + 1} is missing #{missing_fields.join(', ')}" if missing_fields.any?
+  identifier = entry["repository"]
+  errors << "Software repository #{index + 1} has an invalid identifier" unless identifier.is_a?(String) && identifier.match?(%r{\A[^/\s]+/[^/\s]+\z})
+  %w[description language].each do |field|
+    value = entry[field]
+    errors << "Software repository #{index + 1} #{field} must be text or null" unless value.nil? || value.is_a?(String)
+  end
+  %w[stars forks].each do |field|
+    value = entry[field]
+    errors << "Software repository #{index + 1} #{field} must be a non-negative integer" unless value.is_a?(Integer) && value >= 0
+  end
+end
 
 expected_source_counts = {
   "news items" => [news_files.length, 9],
@@ -133,8 +154,48 @@ if (publications_document = documents["/publications/"])
 end
 
 if (repositories_document = documents["/repositories/"])
-  built_repository_count = repositories_document.css(".repositories .repo").length
+  cards = repositories_document.css(".repositories .repo .repository-card")
+  built_repository_count = cards.length
   errors << "Software page renders #{built_repository_count} repository cards; expected 6" unless built_repository_count == 6
+  errors << "Software page must render repository cards as local HTML, not images" if repositories_document.css(".repositories .repo img").any?
+  errors << "Software page still references the retired Vercel card service" if repositories_document.to_html.include?("github-readme-stats")
+
+  repository_entries.each do |entry|
+    repository = entry["repository"]
+    next unless repository.is_a?(String)
+
+    card = cards.find { |candidate| candidate["href"] == "https://github.com/#{repository}" }
+    unless card
+      errors << "Software page is missing the #{repository} card"
+      next
+    end
+
+    errors << "#{repository} card has an incorrect accessible label" unless card["aria-label"] == "Open #{repository} on GitHub"
+    heading = card.at_css(".repository-heading")&.text.to_s.gsub(/\s+/, "")
+    errors << "#{repository} card has an incorrect heading" unless heading == repository
+
+    description = entry["description"].to_s.strip
+    built_description = card.at_css(".repository-description")&.text.to_s.strip
+    if description.empty?
+      errors << "#{repository} card renders an empty description element" if card.at_css(".repository-description")
+    elsif built_description != description
+      errors << "#{repository} card has an incorrect description"
+    end
+
+    language = entry["language"].to_s.strip
+    built_language = card.at_css(".repository-language")&.text.to_s.strip
+    if language.empty?
+      errors << "#{repository} card renders an empty language element" if card.at_css(".repository-language")
+    elsif built_language != language
+      errors << "#{repository} card has an incorrect language"
+    end
+
+    metadata = card.at_css(".repository-meta")&.text.to_s.gsub(/\s+/, " ").strip
+    star_label = entry["stars"] == 1 ? "1 star" : "#{entry['stars']} stars"
+    fork_label = entry["forks"] == 1 ? "1 fork" : "#{entry['forks']} forks"
+    errors << "#{repository} card is missing its star snapshot" unless metadata.include?(star_label)
+    errors << "#{repository} card is missing its fork snapshot" unless metadata.include?(fork_label)
+  end
 end
 
 errors << "Page descriptions are not unique" unless descriptions.uniq.length == pages.length
@@ -157,6 +218,7 @@ Dir.glob(File.join(site_directory, "**", "*"), File::FNM_DOTMATCH).select { |pat
 
   contents = File.read(path)
   errors << "#{path.delete_prefix("#{site_directory}/")} references vulnerable Swiper 10/11" if contents.match?(/swiper(?:@|\/)(?:10|11)\./i)
+  errors << "#{path.delete_prefix("#{site_directory}/")} references the retired GitHub card service" if contents.include?("github-readme-stats")
 end
 
 sitemap_path = File.join(site_directory, "sitemap.xml")

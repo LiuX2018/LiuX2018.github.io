@@ -5,6 +5,8 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  schedule:
+    - cron: "17 3 * * *"
   workflow_dispatch:
 
 permissions:
@@ -46,11 +48,18 @@ jobs:
           python -m pip install -r requirements.txt
           npm ci
 
+      - name: Refresh GitHub repository snapshots
+        if: github.event_name != 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: bundle exec ruby scripts/refresh_repositories.rb
+
       - name: Audit migration contracts
         run: |
           bundle exec al-folio upgrade audit
           bundle exec al-folio upgrade overrides audit --fail-on-stale
           ruby scripts/check_publication_previews.rb
+          bundle exec ruby test/refresh_repositories_test.rb
           npm run lint:prettier
           npm run lint:style-contract
 
@@ -71,7 +80,7 @@ jobs:
           retention-days: 14
 
       - name: Deploy
-        if: github.event_name == 'push'
+        if: github.event_name != 'pull_request'
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: _site

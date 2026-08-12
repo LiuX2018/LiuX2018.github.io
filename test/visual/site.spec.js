@@ -11,18 +11,18 @@ for (const route of routes) {
   for (const theme of ["light", "dark"]) {
     test(`${route.slug} ${theme}`, async ({ page }, testInfo) => {
       await page.addInitScript((selectedTheme) => localStorage.setItem("theme", selectedTheme), theme);
-      await page.route("https://github-readme-stats-git-master-xins-projects-65bbce1e.vercel.app/**", async (request) => {
-        const requestUrl = new URL(request.request().url());
-        const repositoryName = `${requestUrl.searchParams.get("username")}/${requestUrl.searchParams.get("repo")}`;
-        const isDarkCard = requestUrl.searchParams.get("theme") === "dark";
-        const cardBackground = isDarkCard ? "#202124" : "#f8fafc";
-        const cardText = isDarkCard ? "#f3f4f6" : "#1f2937";
-        await request.fulfill({
-          contentType: "image/svg+xml",
-          body: `<svg xmlns="http://www.w3.org/2000/svg" width="495" height="195"><rect width="100%" height="100%" rx="8" fill="${cardBackground}" stroke="#6b7280"/><text x="28" y="72" fill="${cardText}" font-family="Arial" font-size="22" font-weight="700">${repositoryName}</text><text x="28" y="112" fill="${cardText}" font-family="Arial" font-size="16">Repository card preview</text></svg>`,
+      if (route.slug === "software") {
+        await page.route(/^https?:\/\//, async (request) => {
+          const requestUrl = new URL(request.request().url());
+          if (requestUrl.hostname === "127.0.0.1" && requestUrl.port === "4173") return request.continue();
+          if (request.request().resourceType() === "stylesheet") {
+            return request.fulfill({ contentType: "text/css", body: "" });
+          }
+          return request.abort("blockedbyclient");
         });
-      });
-      await page.route(/(?:cloudfront\.net|badge\.dimensions\.ai)/, (request) => request.abort());
+      } else {
+        await page.route(/(?:cloudfront\.net|badge\.dimensions\.ai)/, (request) => request.abort());
+      }
       await page.goto(route.path, { waitUntil: "domcontentloaded" });
       await page.waitForTimeout(500);
 
@@ -128,21 +128,30 @@ for (const route of routes) {
         expect(publicationLayout.every(({ columnOffset, widthOffset }) => columnOffset <= 1 && widthOffset <= 1)).toBe(true);
       }
       if (route.slug === "software") {
-        expect(await page.locator('.repositories a[href*="github.com/"]').count()).toBeGreaterThanOrEqual(6);
-        await page.locator(".repo").evaluateAll((cards) => {
-          const dark = document.documentElement.dataset.theme === "dark";
-          for (const card of cards) {
-            const repositoryName = card.querySelector("img").alt;
-            card.querySelectorAll("img").forEach((image) => image.remove());
-            const fixture = document.createElement("div");
-            fixture.className = "visual-repo-fixture";
-            fixture.style.cssText = `box-sizing:border-box;height:195px;padding:44px 28px;text-align:left;border:1px solid #6b7280;border-radius:8px;background:${dark ? "#202124" : "#f8fafc"};color:${dark ? "#f3f4f6" : "#1f2937"};position:relative;z-index:2`;
-            fixture.innerHTML = `<strong style="display:block;font-size:22px">${repositoryName}</strong><span style="display:block;margin-top:16px;font-size:16px">Repository card preview</span>`;
-            card.querySelector("a").append(fixture);
-          }
-        });
-        await expect(page.locator(".visual-repo-fixture")).toHaveCount(6);
-        await expect(page.locator(".visual-repo-fixture").first()).toBeVisible();
+        const cards = page.locator(".repositories .repository-card");
+        await expect(cards).toHaveCount(6);
+        for (const card of await cards.all()) await expect(card).toBeVisible();
+        await expect(page.locator(".repositories .repo img")).toHaveCount(0);
+        await expect(cards.first()).toContainText("LiuX2018/On-computational-optics");
+        await expect(cards.first()).toContainText("7 stars");
+        await expect(cards.first()).toContainText("0 forks");
+
+        const cardLayout = await cards.evaluateAll((elements) =>
+          (() => {
+            const probe = document.createElement("span");
+            probe.style.backgroundColor = "var(--global-card-bg-color)";
+            document.body.append(probe);
+            const expectedBackground = getComputedStyle(probe).backgroundColor;
+            probe.remove();
+            return elements.map((card) => ({
+              background: getComputedStyle(card).backgroundColor,
+              expectedBackground,
+              height: card.getBoundingClientRect().height,
+            }));
+          })()
+        );
+        expect(cardLayout.every(({ background, expectedBackground }) => background === expectedBackground)).toBe(true);
+        expect(cardLayout.every(({ height }) => height >= 195)).toBe(true);
       }
 
       await page.evaluate(() => window.scrollTo(0, 0));

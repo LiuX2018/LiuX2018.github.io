@@ -1,13 +1,34 @@
 github_users:
   - LiuX2018
 
-# The repo's description is not updated in real-time beacause the api has cache limit in 6~24 hours, seeing "https://github.com/anuraghazra/github-readme-stats#common-options". I have built my own api
-repo_description_lines_max: 2
-
 github_repos:
-  - LiuX2018/On-computational-optics
-  - LiuX2018/RPASM
-  - Hao-Laboratory/Tightly-focused-field-tomography
-  - Hao-Laboratory/Angular-spectrum-rearrangement
-  - whywww/ASASM
-  - Hao-Laboratory/OAM-Ctrl
+  - repository: LiuX2018/On-computational-optics
+    description: Xin's insights into computational optics
+    language:
+    stars: 7
+    forks: 0
+  - repository: LiuX2018/RPASM
+    description: "[Photonics Research, 2026] Accurate wave propagation modeling with reduced precision"
+    language: Python
+    stars: 3
+    forks: 0
+  - repository: Hao-Laboratory/Tightly-focused-field-tomography
+    description: "[Nature Communications, 2025] In situ characterization of tightly focused fields"
+    language: MATLAB
+    stars: 14
+    forks: 1
+  - repository: Hao-Laboratory/Angular-spectrum-rearrangement
+    description: "[Optica, 2025] Accurate and efficient diffraction modeling between arbitrary planes"
+    language: MATLAB
+    stars: 37
+    forks: 4
+  - repository: whywww/ASASM
+    description: "[Optica] Modeling Off-Axis Diffraction with Least-Sampling Angular Spectrum Method"
+    language: Python
+    stars: 81
+    forks: 6
+  - repository: Hao-Laboratory/OAM-Ctrl
+    description: "[Advanced Photonics Research, 2021] Control tightly focused fields via manipulating pupil functions"
+    language: MATLAB
+    stars: 11
+    forks: 3

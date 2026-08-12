@@ -2,6 +2,7 @@
   "scripts": {
     "lint:prettier": "prettier . --check",
     "lint:style-contract": "node test/style_contract.js",
+    "test:repositories": "bundle exec ruby test/refresh_repositories_test.rb",
     "test:visual": "playwright test --config test/visual/playwright.config.js",
     "test:visual:update": "playwright test --config test/visual/playwright.config.js --update-snapshots"
   },

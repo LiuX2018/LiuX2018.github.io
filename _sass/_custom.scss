@@ -3,10 +3,12 @@
   --global-hover-color: #008005;
   --global-text-color-light: #686868;
   --publication-highlight-color: #0056b3;
+  --repository-muted-color: #686868;
 }
 
 html[data-theme="dark"] {
   --publication-highlight-color: #66aaff;
+  --repository-muted-color: #b7b7b7;
 }
 
 html,
@@ -39,40 +41,101 @@ em {
   margin-bottom: 1rem;
 }
 
-.repositories .repo a,
-.repositories .repo img {
-  aspect-ratio: 495 / 195;
-}
-
-.repositories .repo a {
-  display: block;
-  overflow: hidden;
-  position: relative;
-  width: 100%;
+.repositories {
+  align-items: stretch;
 }
 
 .repositories .repo {
-  display: block !important;
+  display: flex !important;
 }
 
-.repositories .repo a::before {
-  align-items: center;
+.repositories .repository-card {
   background: var(--global-card-bg-color);
-  color: var(--global-text-color-light);
-  content: "Open repository on GitHub";
+  border: 1px solid var(--global-divider-color);
+  border-radius: 0.5rem;
+  color: var(--global-text-color);
   display: flex;
-  inset: 0;
-  justify-content: center;
-  position: absolute;
+  flex-direction: column;
+  gap: 0.85rem;
+  min-height: 195px;
+  padding: 1.25rem;
+  text-align: left;
+  text-decoration: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+  width: 100%;
 }
 
-.repositories .repo img {
+.repositories .repository-card:hover {
+  border-color: var(--global-theme-color);
+  box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 10%);
+  color: var(--global-text-color);
+  text-decoration: none;
+  transform: translateY(-2px);
+}
+
+.repositories .repository-card:focus-visible {
+  border-color: var(--global-theme-color);
+  outline: 2px solid var(--global-theme-color);
+  outline-offset: 2px;
+}
+
+.repositories .repository-heading {
   display: block;
-  height: auto;
-  object-fit: cover;
-  position: relative;
-  width: 100%;
-  z-index: 1;
+  font-size: 1.05rem;
+  line-height: 1.35;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.repositories .repository-owner {
+  color: var(--repository-muted-color, var(--global-text-color-light));
+  font-weight: 400;
+}
+
+.repositories .repository-name {
+  color: var(--global-theme-color);
+}
+
+.repositories .repository-description {
+  color: var(--global-text-color);
+  flex: 1;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.repositories .repository-meta {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 0.875rem;
+  gap: 0.5rem 1rem;
+  margin-top: auto;
+}
+
+.repositories .repository-meta span {
+  color: var(--repository-muted-color, var(--global-text-color-light));
+}
+
+.repositories .repository-language::before {
+  background: var(--global-theme-color);
+  border-radius: 50%;
+  content: "";
+  display: inline-block;
+  height: 0.65rem;
+  margin-right: 0.35rem;
+  width: 0.65rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .repositories .repository-card {
+    transition: none;
+  }
+
+  .repositories .repository-card:hover {
+    transform: none;
+  }
 }
 
 .publications {

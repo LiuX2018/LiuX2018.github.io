@@ -18,10 +18,13 @@ const failures = [];
 const config = read("_config.yml");
 const gemfile = read("Gemfile");
 const aboutPage = read("_pages/about.md");
+const repositoriesPage = read("_pages/repositories.md");
 const customStyles = read("_sass/_custom.scss");
 const dockerfile = read("Dockerfile");
 const dockerCompose = read("docker-compose.yml");
 const dockerEntrypoint = read("bin/entry_point.sh");
+const deployWorkflow = read(".github/workflows/deploy.yml");
+const repositoryRefresh = read("scripts/refresh_repositories.rb");
 
 const requiredConfig = [
   [/^theme: al_folio_core$/m, "al_folio_core must own the runtime"],
@@ -31,10 +34,6 @@ const requiredConfig = [
   [/^enable_math:\s*false\b/m, "MathJax must remain disabled"],
   [/^enable_cookie_consent:\s*false\b/m, "cookie consent must remain disabled"],
   [/^enable_navbar_social:\s*true\b/m, "navbar social links must remain enabled"],
-  [
-    /github_readme_stats_url: https:\/\/github-readme-stats-git-master-xins-projects-65bbce1e\.vercel\.app/,
-    "repository cards must use the existing service",
-  ],
 ];
 
 for (const [pattern, message] of requiredConfig) {
@@ -74,6 +73,39 @@ if (!/\.publication-note:not\(:empty\) \{[\s\S]*color: var\(--publication-highli
 }
 if (/\.periodical \+ \.periodical:not\(:empty\)/.test(customStyles)) {
   failures.push("Publication note styling must not target unrelated adjacent periodical fields.");
+}
+if (!repositoriesPage.includes('class="repository-card"') || !repositoriesPage.includes('class="repository-description"')) {
+  failures.push("The Software page must render repository metadata as local HTML cards.");
+}
+if (repositoriesPage.includes("repository/repo.liquid") || /<img\b/.test(repositoriesPage)) {
+  failures.push("The Software page must not restore image-based repository cards.");
+}
+if (
+  !/\.repositories \.repository-card \{[\s\S]*background: var\(--global-card-bg-color\);[\s\S]*border: 1px solid var\(--global-divider-color\);/.test(
+    customStyles
+  )
+) {
+  failures.push("Repository cards must use the adaptive local card and divider colors.");
+}
+if (!/@media \(prefers-reduced-motion: reduce\) \{[\s\S]*\.repositories \.repository-card/.test(customStyles)) {
+  failures.push("Repository card motion must respect reduced-motion preferences.");
+}
+const retiredCardService = "github-readme-stats";
+if ([config, repositoriesPage, customStyles].some((contents) => contents.includes(retiredCardService))) {
+  failures.push("The retired external GitHub card service must not be referenced by the site runtime.");
+}
+
+if (!/schedule:\s*\n\s*- cron: "17 3 \* \* \*"/.test(deployWorkflow)) {
+  failures.push("The deploy workflow must refresh and publish repository snapshots daily at 03:17 UTC.");
+}
+if (!deployWorkflow.includes("bundle exec ruby scripts/refresh_repositories.rb")) {
+  failures.push("The deploy workflow must refresh GitHub repository snapshots before building.");
+}
+if (!deployWorkflow.includes("if: github.event_name != 'pull_request'")) {
+  failures.push("Pull requests must remain build-only while push, schedule, and manual runs can deploy.");
+}
+for (const contract of ["GITHUB_TOKEN", "Tempfile", "File.rename", "checked-in snapshots"]) {
+  if (!repositoryRefresh.includes(contract)) failures.push(`Repository refresh is missing its ${contract} contract.`);
 }
 
 if (!/^FROM ruby:3\.3\.5-slim$/m.test(dockerfile)) {
@@ -131,7 +163,9 @@ for (const requiredPath of [
   "test/visual/playwright.config.js",
   "test/visual/site.spec.js",
   "scripts/check_publication_previews.rb",
+  "scripts/refresh_repositories.rb",
   "scripts/validate_built_site.rb",
+  "test/refresh_repositories_test.rb",
 ]) {
   if (!exists(requiredPath)) failures.push(`Required migration contract is missing: ${requiredPath}.`);
 }

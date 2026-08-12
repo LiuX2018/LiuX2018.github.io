@@ -19,6 +19,7 @@ Jekyll does not reload `_config.yml` while serving. After changing that file, ru
 ```sh
 docker compose run --rm -e JEKYLL_ENV=production jekyll bundle exec jekyll build
 docker compose run --rm jekyll ruby scripts/check_publication_previews.rb
+docker compose run --rm jekyll bundle exec ruby test/refresh_repositories_test.rb
 docker compose run --rm jekyll ruby scripts/validate_built_site.rb
 docker compose run --rm jekyll ruby scripts/check_internal_links.rb
 npm ci
