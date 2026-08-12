@@ -1,0 +1,44 @@
+name: Docker smoke test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docker-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Build and start site
+        run: docker compose up --build --detach --wait --wait-timeout 300
+
+      - name: Verify public routes
+        run: |
+          curl --fail --silent --show-error http://127.0.0.1:8080/ >/dev/null
+          curl --fail --silent --show-error http://127.0.0.1:8080/news/ >/dev/null
+          curl --fail --silent --show-error http://127.0.0.1:8080/publications/ >/dev/null
+          curl --fail --silent --show-error http://127.0.0.1:8080/repositories/ >/dev/null
+          curl --fail --silent --show-error http://127.0.0.1:8080/assets/pdf/CV_Xin_Liu.pdf >/dev/null
+          cv_response_code=$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1:8080/cv/)
+          test "$cv_response_code" = "404"
+
+      - name: Show container logs
+        if: failure()
+        run: docker compose logs --no-color jekyll
+
+      - name: Stop containers
+        if: always()
+        run: docker compose down --volumes

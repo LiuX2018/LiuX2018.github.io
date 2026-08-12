@@ -95,8 +95,9 @@ documents.each do |route, document|
   html = document.to_html
   errors << "#{route} still loads MathJax" if html.match?(/mathjax/i)
   badge_scripts = html.match?(/d1bxh8uas1mnw7\.cloudfront\.net|badge\.dimensions\.ai/)
-  errors << "#{route} has an unexpected publication badge script" if route != "/publications/" && badge_scripts
-  errors << "Publications is missing its badge scripts" if route == "/publications/" && !badge_scripts
+  badge_routes = ["/", "/publications/"]
+  errors << "#{route} has an unexpected publication badge script" if !badge_routes.include?(route) && badge_scripts
+  errors << "#{route} is missing its publication badge scripts" if badge_routes.include?(route) && !badge_scripts
 
   document.css("a[href], link[href], script[src], img[src], source[srcset]").each do |node|
     attribute = node.name == "source" ? "srcset" : (node["src"] ? "src" : "href")

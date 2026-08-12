@@ -62,9 +62,11 @@
   {% endif %}
 
   <!-- Entry bib key -->
-  <div id="{{ entry.key }}" class="{% if site.enable_publication_thumbnails %}col-sm-7{% else %}col-sm-10{% endif %}">
+  <div id="{{ entry.key }}" class="{% if site.enable_publication_thumbnails %}col-sm-8{% else %}col-sm-10{% endif %}">
     <!-- Title -->
-    <div class="title">{{ entry.title }}</div>
+    <div class="title">
+      <strong class="publication-title-text">{{ entry.title }}</strong>
+    </div>
     <!-- Author -->
     <div class="author">
       {% assign author_array_size = entry.author_array | size %}
@@ -189,9 +191,7 @@
     <div class="periodical">
       {{ periodical | strip }}
     </div>
-    <div class="periodical publication-note">
-      {{ entry.note | strip }}
-    </div>
+    <div class="periodical publication-note">{{ entry.note | strip }}</div>
 
     <!-- Links/Buttons -->
     <div class="links">

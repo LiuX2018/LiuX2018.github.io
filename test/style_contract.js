@@ -17,6 +17,11 @@ const filesUnder = (relativePath) => {
 const failures = [];
 const config = read("_config.yml");
 const gemfile = read("Gemfile");
+const aboutPage = read("_pages/about.md");
+const customStyles = read("_sass/_custom.scss");
+const dockerfile = read("Dockerfile");
+const dockerCompose = read("docker-compose.yml");
+const dockerEntrypoint = read("bin/entry_point.sh");
 
 const requiredConfig = [
   [/^theme: al_folio_core$/m, "al_folio_core must own the runtime"],
@@ -38,6 +43,56 @@ for (const [pattern, message] of requiredConfig) {
 
 if (!/gem 'al_folio_core', '= 1\.0\.15'/.test(gemfile)) {
   failures.push("Gemfile must pin al_folio_core 1.0.15.");
+}
+
+if (!/^publication_badges: true$/m.test(aboutPage)) {
+  failures.push("Selected publications must enable their citation badge runtime.");
+}
+if (!/\.publication-legend \{[\s\S]*color: var\(--global-text-color\);/.test(customStyles)) {
+  failures.push("The selected-publication contribution legend must use the primary text color.");
+}
+if (!/\.abbr \.preview \{[\s\S]*height: auto;[\s\S]*max-width: none;[\s\S]*width: 100%;/.test(customStyles)) {
+  failures.push("Publication previews must remain banner-width without changing their intrinsic aspect ratios.");
+}
+if (!/\.author \{[\s\S]*color: var\(--global-text-color-light\);/.test(customStyles)) {
+  failures.push("Coauthor names must use the muted theme text color.");
+}
+if (!/\.author strong \{[\s\S]*color: var\(--global-text-color\);/.test(customStyles)) {
+  failures.push("Xin Liu's author name must retain the primary theme text color.");
+}
+if (!/\.publication-title-text \{[\s\S]*font-weight: 700;/.test(customStyles)) {
+  failures.push("Publication titles must use an explicit bold weight.");
+}
+if (!/:root \{[\s\S]*--publication-highlight-color: #0056b3;/.test(customStyles)) {
+  failures.push("Light-mode publication highlights must retain the accessible legacy blue.");
+}
+if (!/html\[data-theme="dark"\] \{[\s\S]*--publication-highlight-color: #66aaff;/.test(customStyles)) {
+  failures.push("Dark-mode publication highlights must use the accessible adaptive blue.");
+}
+if (!/\.publication-note:not\(:empty\) \{[\s\S]*color: var\(--publication-highlight-color\);/.test(customStyles)) {
+  failures.push("Publication notes must use the dedicated adaptive highlight color.");
+}
+if (/\.periodical \+ \.periodical:not\(:empty\)/.test(customStyles)) {
+  failures.push("Publication note styling must not target unrelated adjacent periodical fields.");
+}
+
+if (!/^FROM ruby:3\.3\.5-slim$/m.test(dockerfile)) {
+  failures.push("Docker must pin Ruby 3.3.5 instead of using a floating image tag.");
+}
+if (!dockerfile.includes("gem install --no-document bundler -v 4.0.6")) {
+  failures.push("Docker must install the Bundler version recorded in Gemfile.lock.");
+}
+if (!dockerCompose.includes("image: liux2018-github-io:al-folio-v1.2")) {
+  failures.push("Compose must use the project image instead of tagging it as upstream latest.");
+}
+if (!dockerCompose.includes("healthcheck:")) {
+  failures.push("Compose must expose Jekyll readiness through a healthcheck.");
+}
+if (!dockerEntrypoint.includes("exec bundle exec jekyll serve")) {
+  failures.push("The Docker entrypoint must keep Jekyll in the foreground.");
+}
+if (dockerEntrypoint.includes("git restore Gemfile.lock")) {
+  failures.push("The Docker entrypoint must not overwrite the mounted Gemfile.lock.");
 }
 
 const allowedOverrides = {
@@ -90,6 +145,21 @@ for (const badge of ["altmetric", "dimensions"]) {
   if (!scripts.includes(`page.publication_badges and site.enable_publication_badges.${badge}`)) {
     failures.push(`${badge} script must be scoped to pages that enable publication badges.`);
   }
+}
+
+const bibliographyLayout = read("_layouts/bib.liquid");
+const aboutLayout = read("_layouts/about.liquid");
+if (!aboutLayout.includes('class="publication-legend" style="color: var(--global-text-color)"')) {
+  failures.push("The selected-publication legend must carry its primary text color through cached development CSS.");
+}
+if (!bibliographyLayout.includes('class="col col-sm-4 abbr"') || !bibliographyLayout.includes("col-sm-8{% else %}col-sm-10")) {
+  failures.push("Publication details must use the supported 4 + 8 responsive grid.");
+}
+if (!bibliographyLayout.includes('<strong class="publication-title-text">{{ entry.title }}</strong>')) {
+  failures.push("Publication titles must retain explicit strong emphasis.");
+}
+if (bibliographyLayout.includes("col-sm-7")) {
+  failures.push("Unsupported col-sm-7 must not return to the Tailwind publication layout.");
 }
 
 const dependencyState = `${read("Gemfile.lock")}\n${read("package-lock.json")}`;

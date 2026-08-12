@@ -7,10 +7,12 @@ The published contract is intentionally small: `/`, `/news/`, `/publications/`, 
 ## Local development
 
 ```sh
-docker compose up --build
+docker compose up --build --detach --wait
 ```
 
-Open <http://localhost:8080>. The container mounts the repository and serves Jekyll with live reload.
+Open <http://localhost:8080> after the command returns. The first image build takes longer because it installs the locked Ruby dependencies; later starts reuse that image. The container mounts the repository and serves Jekyll with live reload. Stop it with `docker compose down`.
+
+Jekyll does not reload `_config.yml` while serving. After changing that file, run `docker compose restart jekyll`. Use `docker compose logs -f jekyll` to inspect startup failures.
 
 ## Production build and validation
 

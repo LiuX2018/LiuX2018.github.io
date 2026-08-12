@@ -1,50 +1,29 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
 
-echo "Entry point script running"
-
-CONFIG_FILE=_config.yml
-DOCKER_DESTINATION=/tmp/_site
-
-# Function to manage Gemfile.lock
-manage_gemfile_lock() {
-    git config --global --add safe.directory /srv/jekyll
-    if command -v git &> /dev/null && [ -f Gemfile.lock ]; then
-        if git ls-files --error-unmatch Gemfile.lock &> /dev/null; then
-            echo "Gemfile.lock is tracked by git, keeping it intact"
-            git restore Gemfile.lock 2>/dev/null || true
-        else
-            echo "Gemfile.lock is not tracked by git, removing it"
-            rm Gemfile.lock
-        fi
-    fi
-}
+readonly CONFIG_FILE="_config.yml"
+readonly DOCKER_DESTINATION="/tmp/_site"
 
 ensure_bundle_deps() {
-    if bundle check >/dev/null 2>&1; then
-        echo "Bundler dependencies already satisfied"
-        return
+    if ! bundle check; then
+        echo "Installing dependencies required by the mounted Gemfile.lock"
+        bundle install --jobs 4 --retry 3
     fi
-
-    echo "Installing missing bundler dependencies"
-    bundle install --jobs 4 --retry 3
 }
 
-start_jekyll() {
-    manage_gemfile_lock
-    ensure_bundle_deps
-    mkdir -p "$DOCKER_DESTINATION"
-    bundle exec jekyll serve --watch --port=8080 --host=0.0.0.0 --livereload --verbose --trace --force_polling --destination "$DOCKER_DESTINATION" --config "$CONFIG_FILE" &
-}
+echo "Starting al-folio development server"
+git config --global --add safe.directory /srv/jekyll 2>/dev/null || true
+ensure_bundle_deps
+mkdir -p "$DOCKER_DESTINATION"
 
-start_jekyll
-
-while true; do
-    inotifywait -q -e modify,move,create,delete $CONFIG_FILE
-    if [ $? -eq 0 ]; then
-        echo "Change detected to $CONFIG_FILE, restarting Jekyll"
-        jekyll_pid=$(pgrep -f jekyll)
-        kill -KILL $jekyll_pid
-        start_jekyll
-    fi
-done
+# Keep Jekyll in the foreground so Docker reports a failed server as a failed
+# container instead of leaving an idle container running without port 8080.
+exec bundle exec jekyll serve \
+    --watch \
+    --port=8080 \
+    --host=0.0.0.0 \
+    --livereload \
+    --trace \
+    --force_polling \
+    --destination "$DOCKER_DESTINATION" \
+    --config "$CONFIG_FILE"

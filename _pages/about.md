@@ -4,7 +4,7 @@ title: About
 permalink: /
 schema_type: ProfilePage
 math: false
-publication_badges: false
+publication_badges: true
 # subtitle: <a href='https://www.ece.hku.hk'>Department of Electrical and Computer Engineering</a>.
 subtitle: A light manipulator
 

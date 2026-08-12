@@ -15,7 +15,7 @@ module.exports = defineConfig({
   use: {
     baseURL: "http://127.0.0.1:4173",
     browserName: "chromium",
-    channel: "chrome",
+    channel: process.env.PLAYWRIGHT_CHANNEL || "chrome",
     colorScheme: "light",
   },
   projects: [

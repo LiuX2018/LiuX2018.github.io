@@ -9,7 +9,7 @@ const routes = [
 
 for (const route of routes) {
   for (const theme of ["light", "dark"]) {
-    test(`${route.slug} ${theme}`, async ({ page }) => {
+    test(`${route.slug} ${theme}`, async ({ page }, testInfo) => {
       await page.addInitScript((selectedTheme) => localStorage.setItem("theme", selectedTheme), theme);
       await page.route("https://github-readme-stats-git-master-xins-projects-65bbce1e.vercel.app/**", async (request) => {
         const requestUrl = new URL(request.request().url());
@@ -37,9 +37,95 @@ for (const route of routes) {
         await expect(page.locator(".profile img")).toHaveAttribute("alt", "Portrait of Xin Liu");
         await expect(page.getByRole("heading", { name: "News" })).toBeVisible();
         await expect(page.getByRole("heading", { name: "Selected Publications" })).toBeVisible();
+        const legendUsesPrimaryTextColor = await page.locator(".publication-legend").evaluate((legend) => {
+          const primaryTextColor = getComputedStyle(document.documentElement).getPropertyValue("--global-text-color").trim();
+          const probe = document.createElement("span");
+          probe.style.color = primaryTextColor;
+          document.body.append(probe);
+          const expectedColor = getComputedStyle(probe).color;
+          probe.remove();
+          return getComputedStyle(legend).color === expectedColor;
+        });
+        expect(legendUsesPrimaryTextColor).toBe(true);
+        await expect(page.locator('script[src="https://badge.dimensions.ai/badge.js"]')).toHaveCount(1);
+        expect(await page.locator(".publications .__dimensions_badge_embed__").count()).toBeGreaterThan(0);
       }
       if (route.slug === "publications") {
         expect(await page.locator(".publications img.preview").count()).toBe(26);
+      }
+      if (["about", "publications"].includes(route.slug)) {
+        const highlightResult = await page.locator(".publications .publication-note").evaluateAll((notes, selectedTheme) => {
+          const parseRgb = (color) =>
+            color
+              .match(/[\d.]+/g)
+              .slice(0, 3)
+              .map(Number);
+          const luminance = (color) => {
+            const channels = parseRgb(color).map((channel) => channel / 255);
+            const linear = channels.map((channel) => (channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4));
+            return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2];
+          };
+          const contrast = (foreground, background) => {
+            const foregroundLuminance = luminance(foreground);
+            const backgroundLuminance = luminance(background);
+            return (Math.max(foregroundLuminance, backgroundLuminance) + 0.05) / (Math.min(foregroundLuminance, backgroundLuminance) + 0.05);
+          };
+          const expectedColor = selectedTheme === "dark" ? "rgb(102, 170, 255)" : "rgb(0, 86, 179)";
+          const backgroundColor = getComputedStyle(document.body).backgroundColor;
+          const populatedNotes = notes.filter((note) => note.textContent.trim());
+          return {
+            count: populatedNotes.length,
+            colorsMatch: populatedNotes.every((note) => getComputedStyle(note).color === expectedColor),
+            minimumContrast: Math.min(...populatedNotes.map((note) => contrast(getComputedStyle(note).color, backgroundColor))),
+          };
+        }, theme);
+        expect(highlightResult.count).toBeGreaterThan(0);
+        expect(highlightResult.colorsMatch).toBe(true);
+        expect(highlightResult.minimumContrast).toBeGreaterThanOrEqual(7);
+
+        const titleWeights = await page
+          .locator(".publications .publication-title-text")
+          .evaluateAll((titles) => titles.map((title) => getComputedStyle(title).fontWeight));
+        expect(titleWeights.every((weight) => Number(weight) >= 700)).toBe(true);
+
+        const previewRatioOffsets = await page.locator(".publications img.preview").evaluateAll((images) =>
+          images.map((image) => {
+            const bounds = image.getBoundingClientRect();
+            return Math.abs(bounds.width / bounds.height - image.naturalWidth / image.naturalHeight);
+          })
+        );
+        expect(previewRatioOffsets.every((offset) => offset <= 0.01)).toBe(true);
+
+        const authorColors = await page
+          .locator(".publications .author")
+          .first()
+          .evaluate((author) => {
+            const self = author.querySelector("strong");
+            const links = [...author.querySelectorAll("a")];
+            return {
+              coauthor: getComputedStyle(author).color,
+              self: self ? getComputedStyle(self).color : null,
+              links: links.map((link) => getComputedStyle(link).color),
+            };
+          });
+        expect(authorColors.self).not.toBe(authorColors.coauthor);
+        expect(authorColors.links.every((color) => color === authorColors.coauthor)).toBe(true);
+      }
+
+      if (["about", "publications"].includes(route.slug) && testInfo.project.name === "desktop") {
+        const publicationLayout = await page.locator(".publications ol.bibliography > li > .row").evaluateAll((rows) =>
+          rows.map((row) => {
+            const previewColumn = row.querySelector(":scope > .col-sm-4.abbr");
+            const detailsColumn = row.querySelector(":scope > .col-sm-8");
+            const venueBanner = previewColumn.querySelector(":scope > abbr");
+            const preview = previewColumn.querySelector("img.preview, video.preview");
+            return {
+              columnOffset: Math.abs(previewColumn.getBoundingClientRect().top - detailsColumn.getBoundingClientRect().top),
+              widthOffset: venueBanner && preview ? Math.abs(venueBanner.getBoundingClientRect().width - preview.getBoundingClientRect().width) : 0,
+            };
+          })
+        );
+        expect(publicationLayout.every(({ columnOffset, widthOffset }) => columnOffset <= 1 && widthOffset <= 1)).toBe(true);
       }
       if (route.slug === "software") {
         expect(await page.locator('.repositories a[href*="github.com/"]').count()).toBeGreaterThanOrEqual(6);

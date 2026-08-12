@@ -2,6 +2,11 @@
   --global-theme-color: #008005;
   --global-hover-color: #008005;
   --global-text-color-light: #686868;
+  --publication-highlight-color: #0056b3;
+}
+
+html[data-theme="dark"] {
+  --publication-highlight-color: #66aaff;
 }
 
 html,
@@ -30,7 +35,7 @@ em {
 }
 
 .publication-legend {
-  color: var(--global-text-color-light);
+  color: var(--global-text-color);
   margin-bottom: 1rem;
 }
 
@@ -93,11 +98,17 @@ em {
     margin-bottom: 0.75rem;
   }
 
+  .abbr figure,
+  .abbr picture {
+    display: block;
+    width: 100%;
+  }
+
   .abbr .preview {
-    height: 150px;
+    display: block;
+    height: auto;
     max-height: none;
-    max-width: 200px;
-    object-fit: contain;
+    max-width: none;
     width: 100%;
   }
 
@@ -105,16 +116,30 @@ em {
     min-height: 2rem;
   }
 
-  .title {
+  .publication-title-text {
     font-weight: 700;
+  }
+
+  .author {
+    color: var(--global-text-color-light);
+  }
+
+  .author a {
+    color: inherit;
+  }
+
+  .author a:hover,
+  .author a:focus {
+    color: var(--global-theme-color);
   }
 
   .author strong {
+    color: var(--global-text-color);
     font-weight: 700;
   }
 
-  .periodical + .periodical:not(:empty) {
-    color: var(--global-theme-color);
+  .publication-note:not(:empty) {
+    color: var(--publication-highlight-color);
     font-weight: 700;
     margin-top: 0.25rem;
   }
@@ -130,7 +155,6 @@ em {
   }
 
   .publications .abbr .preview {
-    height: 220px;
     max-width: 100%;
   }
 }
