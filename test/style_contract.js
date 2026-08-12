@@ -105,6 +105,9 @@ if (!/schedule:\s*\n\s*- cron: "17 3 \* \* \*"/.test(deployWorkflow)) {
 if (!deployWorkflow.includes("bundle exec ruby scripts/refresh_repositories.rb")) {
   failures.push("The deploy workflow must refresh GitHub repository snapshots before building.");
 }
+if (!deployWorkflow.includes("npx prettier --write _data/repositories.yml")) {
+  failures.push("The deploy workflow must format refreshed repository snapshots before linting.");
+}
 if (!deployWorkflow.includes("if: github.event_name != 'pull_request'")) {
   failures.push("Pull requests must remain build-only while push, schedule, and manual runs can deploy.");
 }

@@ -52,7 +52,9 @@ jobs:
         if: github.event_name != 'pull_request'
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: bundle exec ruby scripts/refresh_repositories.rb
+        run: |
+          bundle exec ruby scripts/refresh_repositories.rb
+          npx prettier --write _data/repositories.yml
 
       - name: Audit migration contracts
         run: |
