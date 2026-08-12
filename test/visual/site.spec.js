@@ -139,7 +139,7 @@ for (const route of routes) {
         const cardLayout = await cards.evaluateAll((elements) =>
           (() => {
             const probe = document.createElement("span");
-            probe.style.backgroundColor = "var(--global-card-bg-color)";
+            probe.style.backgroundColor = "var(--repository-card-bg-color)";
             document.body.append(probe);
             const expectedBackground = getComputedStyle(probe).backgroundColor;
             probe.remove();

@@ -81,11 +81,15 @@ if (repositoriesPage.includes("repository/repo.liquid") || /<img\b/.test(reposit
   failures.push("The Software page must not restore image-based repository cards.");
 }
 if (
-  !/\.repositories \.repository-card \{[\s\S]*background: var\(--global-card-bg-color\);[\s\S]*border: 1px solid var\(--global-divider-color\);/.test(
+  !/:root \{[\s\S]*--repository-card-bg-color: #ffffff;[\s\S]*--repository-card-border-color: rgba\(0, 0, 0, 0\.1\);[\s\S]*\}/.test(customStyles) ||
+  !/html\[data-theme="dark"\] \{[\s\S]*--repository-card-bg-color: #212529;[\s\S]*--repository-card-border-color: #424246;[\s\S]*\}/.test(
+    customStyles
+  ) ||
+  !/\.repositories \.repository-card \{[\s\S]*background-color: var\(--repository-card-bg-color\);[\s\S]*border: 1px solid var\(--repository-card-border-color\);/.test(
     customStyles
   )
 ) {
-  failures.push("Repository cards must use the adaptive local card and divider colors.");
+  failures.push("Repository cards must use explicit light and dark card and divider colors.");
 }
 if (!/@media \(prefers-reduced-motion: reduce\) \{[\s\S]*\.repositories \.repository-card/.test(customStyles)) {
   failures.push("Repository card motion must respect reduced-motion preferences.");

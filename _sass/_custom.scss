@@ -3,11 +3,15 @@
   --global-hover-color: #008005;
   --global-text-color-light: #686868;
   --publication-highlight-color: #0056b3;
+  --repository-card-bg-color: #ffffff;
+  --repository-card-border-color: rgba(0, 0, 0, 0.1);
   --repository-muted-color: #686868;
 }
 
 html[data-theme="dark"] {
   --publication-highlight-color: #66aaff;
+  --repository-card-bg-color: #212529;
+  --repository-card-border-color: #424246;
   --repository-muted-color: #b7b7b7;
 }
 
@@ -50,8 +54,8 @@ em {
 }
 
 .repositories .repository-card {
-  background: var(--global-card-bg-color);
-  border: 1px solid var(--global-divider-color);
+  background-color: var(--repository-card-bg-color);
+  border: 1px solid var(--repository-card-border-color);
   border-radius: 0.5rem;
   color: var(--global-text-color);
   display: flex;
