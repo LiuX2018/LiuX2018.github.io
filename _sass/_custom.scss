@@ -2,6 +2,10 @@
   --global-theme-color: #008005;
   --global-hover-color: #008005;
   --global-text-color-light: #686868;
+  --site-content-measure: 70ch;
+  --site-radius: 0.55rem;
+  --site-section-gap: clamp(2.5rem, 5vw, 4rem);
+  --site-control-height: 2.15rem;
   --publication-highlight-color: #0056b3;
   --repository-card-bg-color: #ffffff;
   --repository-card-border-color: rgba(0, 0, 0, 0.1);
@@ -22,6 +26,108 @@ input,
 select,
 textarea {
   font-family: Arial, "Segoe UI", sans-serif;
+}
+
+body {
+  line-height: 1.55;
+}
+
+.container {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+.post-header {
+  margin-bottom: 1.75rem;
+}
+
+.post-title {
+  letter-spacing: -0.025em;
+  margin-bottom: 0.35rem;
+}
+
+.post-header .desc {
+  color: var(--global-text-color-light);
+  margin-bottom: 0;
+}
+
+.about-intro {
+  align-items: start;
+  display: grid;
+  gap: clamp(2rem, 5vw, 4rem);
+  grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+  margin-bottom: var(--site-section-gap);
+}
+
+.about-intro .profile {
+  float: none;
+  margin: 0;
+  width: auto;
+}
+
+.about-intro .profile img {
+  display: block;
+  margin: 0 auto;
+  max-width: 280px;
+  width: 100%;
+}
+
+.about-bio {
+  max-width: var(--site-content-measure);
+  min-width: 0;
+}
+
+.about-bio p {
+  line-height: 1.68;
+  margin-bottom: 1.15rem;
+}
+
+.about-bio p:last-child {
+  margin-bottom: 0;
+}
+
+.section-heading {
+  align-items: baseline;
+  display: flex;
+  justify-content: space-between;
+  letter-spacing: -0.015em;
+  margin-top: var(--site-section-gap);
+}
+
+.section-heading a {
+  color: inherit;
+}
+
+.news {
+  margin-top: 0.75rem;
+}
+
+.news .table {
+  margin-bottom: 0;
+}
+
+.news .table th,
+.news .table td {
+  border: 0;
+  line-height: 1.55;
+  padding: 0.6rem 0;
+  vertical-align: top;
+}
+
+.news .table th {
+  color: var(--global-text-color-light);
+  font-size: 0.9rem;
+  padding-right: 1rem;
+  white-space: nowrap;
+  width: 8.25rem !important;
+}
+
+.news .table td {
+  max-width: var(--site-content-measure);
+}
+
+.news-title {
+  font-weight: 600;
 }
 
 .post-title,
@@ -56,13 +162,13 @@ em {
 .repositories .repository-card {
   background-color: var(--repository-card-bg-color);
   border: 1px solid var(--repository-card-border-color);
-  border-radius: 0.5rem;
+  border-radius: var(--site-radius);
   color: var(--global-text-color);
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
-  min-height: 195px;
-  padding: 1.25rem;
+  gap: 0.65rem;
+  min-height: 175px;
+  padding: 1rem;
   text-align: left;
   text-decoration: none;
   transition:
@@ -143,7 +249,7 @@ em {
 }
 
 .publications {
-  margin-top: 1.25rem;
+  margin-top: 1.75rem;
 
   h2.year {
     margin-bottom: 1rem;
@@ -154,7 +260,14 @@ em {
   }
 
   ol.bibliography > li {
+    border-bottom: 1px solid var(--global-divider-color);
     margin-bottom: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  ol.bibliography > li:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
   }
 
   .abbr {
@@ -168,7 +281,17 @@ em {
   .abbr figure,
   .abbr picture {
     display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: min(100%, 320px);
     width: 100%;
+  }
+
+  .abbr > abbr {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 320px;
   }
 
   .abbr .preview {
@@ -213,6 +336,70 @@ em {
 
   .links .award {
     font-weight: 700;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-top: 0.7rem;
+  }
+
+  .links a.btn {
+    border-radius: 0.35rem;
+    margin: 0;
+    min-height: var(--site-control-height);
+  }
+}
+
+footer.sticky-bottom {
+  margin-top: var(--site-section-gap) !important;
+  padding-bottom: 1.5rem;
+  padding-top: 1.5rem;
+}
+
+@media (max-width: 767.98px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .about-intro {
+    display: block;
+  }
+
+  .about-intro .profile {
+    margin-bottom: 1.75rem;
+  }
+
+  .about-intro .profile img {
+    max-width: min(68vw, 280px);
+  }
+
+  .about-bio {
+    max-width: none;
+  }
+
+  .section-heading {
+    margin-top: 2.75rem;
+  }
+
+  .news .table th {
+    width: 7.25rem !important;
+  }
+
+  .publications ol.bibliography > li {
+    margin-bottom: 1.75rem;
+    padding-bottom: 1.75rem;
+  }
+
+  .publications .abbr {
+    margin-bottom: 1.25rem;
+    text-align: center;
+  }
+
+  .repositories .repository-card {
+    min-height: 0;
   }
 }
 

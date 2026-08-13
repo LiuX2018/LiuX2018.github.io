@@ -21,9 +21,10 @@ for (const route of routes) {
           return request.abort("blockedbyclient");
         });
       } else {
-        await page.route(/(?:cloudfront\.net|badge\.dimensions\.ai)/, (request) => request.abort());
+        await page.route(/(?:cloudfront\.net|badge\.dimensions\.ai|github\.githubassets\.com)/, (request) => request.abort());
       }
       await page.goto(route.path, { waitUntil: "domcontentloaded" });
+      await page.addStyleTag({ content: ".emoji { visibility: hidden !important; }" });
       await page.waitForTimeout(500);
 
       await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
@@ -151,7 +152,9 @@ for (const route of routes) {
           })()
         );
         expect(cardLayout.every(({ background, expectedBackground }) => background === expectedBackground)).toBe(true);
-        expect(cardLayout.every(({ height }) => height >= 195)).toBe(true);
+        if (testInfo.project.name === "desktop") {
+          expect(cardLayout.every(({ height }) => height >= 175)).toBe(true);
+        }
       }
 
       await page.evaluate(() => window.scrollTo(0, 0));
