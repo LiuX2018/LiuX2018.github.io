@@ -5,7 +5,7 @@
   --site-content-measure: 70ch;
   --site-radius: 0.55rem;
   --site-section-gap: clamp(2.5rem, 5vw, 4rem);
-  --site-control-height: 2.15rem;
+  --site-control-height: 1.35rem;
   --publication-highlight-color: #0056b3;
   --repository-card-bg-color: #ffffff;
   --repository-card-border-color: rgba(0, 0, 0, 0.1);
@@ -345,10 +345,15 @@ em {
     margin-top: 0.7rem;
   }
 
-  .links a.btn {
+  ol.bibliography > li .links a.btn {
+    align-items: center;
     border-radius: 0.35rem;
+    display: inline-flex;
+    justify-content: center;
+    line-height: 1.2;
     margin: 0;
     min-height: var(--site-control-height);
+    padding: 0.05rem 0.45rem;
   }
 }
 
