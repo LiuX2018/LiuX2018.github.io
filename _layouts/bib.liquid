@@ -78,8 +78,8 @@
 
       {%- for author in entry.author_array limit: author_array_limit -%}
         {% assign author_is_self = false %}
-        {%- assign author_last_name = author.last | regex_replace: '[*∗†‡§¶‖&^✉]', '' -%}
-        {%- assign author_last_html = author.last | regex_replace: '([*∗†‡§¶‖&^✉]+)', '<sup>\1</sup>' -%}
+        {%- assign author_last_name = author.last | regex_replace: '[#*∗†‡§¶‖&^✉]', '' -%}
+        {%- capture author_last_html -%}{%- include publication_author_name.liquid name=author.last -%}{%- endcapture -%}
         {% if site.scholar.last_name contains author_last_name %}
           {% if site.scholar.first_name contains author.first %}
             {% assign author_is_self = true %}
@@ -133,7 +133,7 @@
             {% assign more_authors_show = more_authors_show | append: ', ' %}
           {% endunless %}
         {%- endfor -%}
-        {%- assign more_authors_show = more_authors_show | regex_replace: '([*∗†‡§¶‖&^✉]+)', '<sup>\1</sup>' -%}
+        {%- capture more_authors_show -%}{%- include publication_author_name.liquid name=more_authors_show -%}{%- endcapture -%}
         , and
         <span
           class="more-authors"
@@ -141,7 +141,7 @@
           onclick="
               var element = this;
               element.setAttribute('title', '');
-              var more_authors_text = element.textContent == '{{ more_authors_hide }}' ? '{{ more_authors_show }}' : '{{ more_authors_hide }}';
+              var more_authors_text = element.textContent == {{ more_authors_hide | jsonify | escape }} ? {{ more_authors_show | jsonify | escape }} : {{ more_authors_hide | jsonify | escape }};
               var cursorPosition = 0;
               var textAdder = setInterval(function(){
                 element.innerHTML = more_authors_text.substring(0, cursorPosition + 1);

@@ -1,0 +1,7 @@
+{{-
+  include.name
+  | regex_replace: '([∗†‡§¶‖&^✉]+)', '<sup>\1</sup>'
+  | regex_replace: '([#*]+)', '<sup class="publication-marks">\1</sup>'
+  | replace: '#', '<span class="publication-mark-equal">#</span>'
+  | replace: '*', '<span class="publication-mark-corresponding">*</span>'
+-}}

@@ -135,7 +135,7 @@ if (dockerEntrypoint.includes("git restore Gemfile.lock")) {
 }
 
 const allowedOverrides = {
-  _includes: ["header.liquid", "metadata.liquid", "scripts.liquid"],
+  _includes: ["header.liquid", "metadata.liquid", "publication_author_name.liquid", "scripts.liquid"],
   _layouts: ["about.liquid", "bib.liquid"],
   _sass: ["_custom.scss"],
   "assets/css": ["main.scss"],
