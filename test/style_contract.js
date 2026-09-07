@@ -205,8 +205,8 @@ if (
 ) {
   failures.push("Selected-publication intros must render only on pages that enable selected papers.");
 }
-if (!/\.publication-intro \{[\s\S]*color: var\(--global-text-color\);[\s\S]*line-height: 1\.55;/.test(customStyles)) {
-  failures.push("Publication intros must use readable primary theme text styling.");
+if (!/\.publication-intro \{[\s\S]*color: var\(--global-text-color-light\);[\s\S]*line-height: 1\.55;/.test(customStyles)) {
+  failures.push("Publication intros must use readable secondary theme text styling.");
 }
 if (bibliographyLayout.includes("col-sm-7")) {
   failures.push("Unsupported col-sm-7 must not return to the Tailwind publication layout.");

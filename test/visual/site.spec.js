@@ -118,6 +118,18 @@ for (const route of routes) {
           await expect(intros.first()).toBeVisible();
           expect((await intros.allTextContents()).every((intro) => intro.trim().length > 0)).toBe(true);
         }
+        const introColors = await intros.evaluateAll((elements) => {
+          const probe = document.createElement("span");
+          probe.style.color = "var(--global-text-color-light)";
+          document.body.append(probe);
+          const expectedColor = getComputedStyle(probe).color;
+          probe.remove();
+          return {
+            expectedColor,
+            actualColors: elements.map((element) => getComputedStyle(element).color),
+          };
+        });
+        expect(introColors.actualColors.every((color) => color === introColors.expectedColor)).toBe(true);
       }
 
       if (["about", "publications"].includes(route.slug) && testInfo.project.name === "desktop") {
