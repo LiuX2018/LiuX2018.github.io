@@ -27,7 +27,7 @@ module.exports = defineConfig({
     { name: "mobile", use: { ...devices["iPhone 13"] } },
   ],
   webServer: {
-    command: `npx --yes http-server ${JSON.stringify(siteDirectory)} -p 4173 -c-1`,
+    command: `node node_modules/http-server/bin/http-server ${JSON.stringify(siteDirectory)} -p 4173 -c-1`,
     cwd: path.resolve(__dirname, "../.."),
     url: "http://127.0.0.1:4173",
     reuseExistingServer: !process.env.CI,

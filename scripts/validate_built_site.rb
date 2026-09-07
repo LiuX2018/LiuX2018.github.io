@@ -5,6 +5,7 @@ require "json"
 require "nokogiri"
 require "uri"
 require "yaml"
+require_relative "publication_intros"
 
 source_root = File.expand_path("..", __dir__)
 site_directory = File.expand_path(ENV.fetch("SITE_DIR", "_site"), source_root)
@@ -19,10 +20,10 @@ errors = []
 descriptions = []
 
 news_files = Dir[File.join(source_root, "_news", "*.md")]
-bibliography_source = File.read(File.join(source_root, "_bibliography", "papers.bib"))
-publication_count = bibliography_source.scan(/^@\w+\s*[{(]/).length
-selected_publication_count = bibliography_source.scan(/^\s*selected\s*=\s*[{\"]true[}\"]/i).length
-preview_count = bibliography_source.scan(/^\s*preview\s*=\s*[{\"][^}\"]+[}\"]/i).length
+bibliography_entries = BibTeX.open(File.join(source_root, "_bibliography", "papers.bib")).entries.values
+publication_count = bibliography_entries.length
+preview_count = bibliography_entries.count { |entry| !entry[:preview].to_s.strip.empty? }
+errors.concat(PublicationIntros.source_errors(bibliography_entries))
 repositories = YAML.safe_load(File.read(File.join(source_root, "_data", "repositories.yml")), aliases: true)
 repository_entries = repositories.fetch("github_repos", [])
 repository_count = repository_entries.length
@@ -50,7 +51,6 @@ end
 expected_source_counts = {
   "news items" => [news_files.length, 9],
   "publications" => [publication_count, 26],
-  "selected publications" => [selected_publication_count, 12],
   "publication previews" => [preview_count, 26],
   "software repositories" => [repository_count, 6]
 }
@@ -135,8 +135,7 @@ documents.each do |route, document|
 end
 
 if (homepage = documents["/"])
-  homepage_selected_count = homepage.css(".publications ol.bibliography > li").length
-  errors << "Homepage renders #{homepage_selected_count} selected publications; expected 12" unless homepage_selected_count == 12
+  errors.concat(PublicationIntros.render_errors(homepage, bibliography_entries))
   errors << "Homepage profile image is missing" unless homepage.at_css('.profile img[alt="Portrait of Xin Liu"]')
   errors << "Homepage does not preload its profile image" unless homepage.at_css('link[rel="preload"][as="image"][href*="xin_recent_photo.png"]')
 end
@@ -149,8 +148,10 @@ end
 if (publications_document = documents["/publications/"])
   built_publication_count = publications_document.css(".publications ol.bibliography > li").length
   built_preview_count = publications_document.css(".publications img.preview, .publications video.preview").length
+  built_intro_count = publications_document.css(".publications .publication-intro").length
   errors << "Publications page renders #{built_publication_count} entries; expected 26" unless built_publication_count == 26
   errors << "Publications page renders #{built_preview_count} previews; expected 26" unless built_preview_count == 26
+  errors << "Publications page renders #{built_intro_count} intros; expected none" unless built_intro_count.zero?
 end
 
 if (repositories_document = documents["/repositories/"])

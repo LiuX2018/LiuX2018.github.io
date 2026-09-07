@@ -199,6 +199,15 @@ if (!bibliographyLayout.includes('class="col col-sm-4 abbr"') || !bibliographyLa
 if (!bibliographyLayout.includes('<strong class="publication-title-text">{{ entry.title }}</strong>')) {
   failures.push("Publication titles must retain explicit strong emphasis.");
 }
+if (
+  !bibliographyLayout.includes("{% if page.selected_papers and entry.intro %}") ||
+  !bibliographyLayout.includes('<p class="publication-intro">{{ entry.intro | strip | escape }}</p>')
+) {
+  failures.push("Selected-publication intros must render only on pages that enable selected papers.");
+}
+if (!/\.publication-intro \{[\s\S]*color: var\(--global-text-color\);[\s\S]*line-height: 1\.55;/.test(customStyles)) {
+  failures.push("Publication intros must use readable primary theme text styling.");
+}
 if (bibliographyLayout.includes("col-sm-7")) {
   failures.push("Unsupported col-sm-7 must not return to the Tailwind publication layout.");
 }

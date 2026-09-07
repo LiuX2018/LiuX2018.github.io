@@ -401,6 +401,7 @@ filtered_bibtex_keywords:
     hal,
     html,
     inspirehep_id,
+    intro,
     pdf,
     pmid,
     poster,

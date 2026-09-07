@@ -32,6 +32,7 @@
   code={https://github.com/LiuX2018/RPASM},
   dimensions=true,
   selected={true},
+  intro={Wave propagation simulations often face a trade-off between speed and numerical accuracy. This paper identifies the precision limits that matter and shows that lower-precision computation can still produce accurate results, helping optics models run faster and use less memory.},
   note={The first paper during my postdoc!}
 }
 
@@ -50,6 +51,7 @@
   website={https://whywww.github.io/off-aperture-encoding/},
   dimensions=true,
   selected={true},
+  intro={Wide-field RGB-D cameras need to recover both color and depth without losing image quality near the edges. This work places a diffractive optical element away from the aperture and jointly learns the optics and decoder, giving the system more local wavefront control and better wide-field imaging.}
 }
 
 @article{Liu2025SituFullyVectorial,
@@ -67,6 +69,7 @@
   code={https://github.com/hao-laboratory/tightly-focused-field-tomography},
   dimensions=true,
   selected={true},
+  intro={Tightly focused light is difficult to measure because its three-dimensional polarization structure is complex. This paper introduces an in-situ method that reconstructs the full vector field and the objective's light-shaping pupil function from a small number of 2D measurements, enabling rapid characterization and optimization of nanoscale light.},
   note={The final paper of my PhD!}
 }
 
@@ -172,7 +175,8 @@
 
   preview={2022_dps_sted.png},
   dimensions=true,
-  selected={true}
+  selected={true},
+  intro={Three-dimensional STED microscopy can suffer from strong background caused by optical aberrations and out-of-focus fluorescence. This work switches between carefully designed phase patterns to measure that background and subtract it, improving the signal-to-background ratio with a flexible and practical adaptive-optics method.}
 }
 
 @article{Zhan2022SimultaneousSuperresolutionEstimation,
@@ -205,6 +209,7 @@
   code={https://github.com/hao-laboratory/angular-spectrum-rearrangement},
   dimensions=true,
   selected={true},
+  intro={Simulating light between tilted or otherwise non-parallel planes is useful for complex optical systems, but existing methods can be slow or inaccurate. This paper rearranges the angular spectrum and uses flexible Fourier sampling to model such diffraction accurately and efficiently, including difficult orthogonal-plane cases.},
   note={My first time as a corresponding author! Top downloads in Jan 2025!}
 }
 
@@ -301,7 +306,8 @@
   website={https://whywww.github.io/LSASM_page},
   dimensions=true,
   note={Top downloads in Jul and Aug 2023!},
-  selected={true}
+  selected={true},
+  intro={Off-axis diffraction is hard to simulate efficiently because the sampling requirements change with the propagation angle. This paper develops a least-sampling angular spectrum method that adapts those requirements, enabling accurate, fast modeling at large angles and for high-frequency optical patterns.}
 }
 
 @article{Liu2023FastGenerationArbitrary,
@@ -316,7 +322,8 @@
 
   preview={2023_focus_array.gif},
   dimensions=true,
-  selected={true}
+  selected={true},
+  intro={Optical focus arrays are useful for trapping, fabrication, microscopy, and displays, but conventional hologram algorithms can be slow and restrict the spot layout. This work replaces the usual Fourier calculation with a more flexible linear-algebra approach and controls each focus's position and intensity accurately.}
 }
 
 @article{Cai2023WavelengthselectiveWavefrontShaping,
@@ -347,7 +354,8 @@
   preview={2022_optics_model_representation.png},
   dimensions=true,
   note={My first paper on computational imaging!},
-  selected={true}
+  selected={true},
+  intro={Deep optics jointly designs a camera and the algorithm that processes its images, but the best way to model the optics is not always clear. This study compares several optical model representations for all-in-focus imaging and depth estimation, revealing their accuracy, trade-offs, and sensitivity to fabrication errors.}
 }
 
 @article{Liu2022CalibrationPhaseonlyLiquidcrystal,
@@ -362,7 +370,8 @@
   preview={2022_slm_calibration.png},
   code={https://github.com/Hao-Laboratory/Diffraction-based-SLM-calibration},
   dimensions=true,
-  selected={true}
+  selected={true},
+  intro={Phase-only spatial light modulators must be calibrated before they can shape light accurately. This paper reads the intensity pattern produced by specially designed holograms to recover both global and local phase-response lookup tables, without requiring interferometers or precise camera placement, making in-situ calibration simpler and more robust.}
 }
 
 @article{Liu2021JiYuDian,
@@ -377,7 +386,8 @@
 
   preview={2021_psf_engineering_review.png},
   dimensions=true,
-  selected={true}
+  selected={true},
+  intro={A microscope's point spread function describes how it forms an image, and deliberately shaping it can improve resolution, speed, or 3D information. This review explains the main ideas and methods of point-spread-function engineering in computational microscopy, and discusses its remaining challenges and future directions.}
 }
 
 @article{Liu2021GenerationArbitraryLongitudinal,
@@ -394,7 +404,8 @@
   code={https://github.com/Hao-Laboratory/OAM-Ctrl},
   dimensions=true,
   note={Cover story!},
-  selected={true}
+  selected={true},
+  intro={Longitudinal polarization vortices are structured light fields whose electric field points partly along the direction of propagation. This paper uses phase and amplitude control at the back pupil of a high-numerical-aperture objective to generate multiple vortices with chosen positions, topological charges, and tunable strengths.}
 }
 
 @article{Liu2020AberrationsStructuredIllumination,
@@ -409,5 +420,6 @@
   preview={2020_sim_aberration.png},
   dimensions=true,
   note={My first scientific paper!},
-  selected={true}
+  selected={true},
+  intro={Optical aberrations can reduce the resolution and contrast of structured illumination microscopy. This theoretical study models aberrations in both the illumination and detection paths, and also examines beam misalignment, providing practical guidance for understanding and optimizing SIM systems.}
 }

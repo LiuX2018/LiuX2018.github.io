@@ -62,6 +62,7 @@ jobs:
           bundle exec al-folio upgrade overrides audit --fail-on-stale
           ruby scripts/check_publication_previews.rb
           bundle exec ruby test/refresh_repositories_test.rb
+          bundle exec ruby test/publication_intros_test.rb
           npm run lint:prettier
           npm run lint:style-contract
 

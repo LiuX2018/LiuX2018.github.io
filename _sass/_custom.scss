@@ -261,8 +261,8 @@ em {
 
   ol.bibliography > li {
     border-bottom: 1px solid var(--global-divider-color);
-    margin-bottom: 2rem;
-    padding-bottom: 2rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
   }
 
   ol.bibliography > li:last-child {
@@ -334,6 +334,12 @@ em {
     margin-top: 0.25rem;
   }
 
+  .publication-intro {
+    color: var(--global-text-color);
+    line-height: 1.55;
+    margin: 0.75rem 0 0;
+  }
+
   .links .award {
     font-weight: 700;
   }
@@ -341,8 +347,13 @@ em {
   .links {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.45rem;
+    gap: 8px;
     margin-top: 0.7rem;
+  }
+
+  ol.bibliography > li .links a.btn:focus-visible {
+    outline: 2px solid var(--global-text-color);
+    outline-offset: 3px;
   }
 
   ol.bibliography > li .links a.btn {
@@ -352,7 +363,8 @@ em {
     justify-content: center;
     line-height: 1.2;
     margin: 0;
-    min-height: var(--site-control-height);
+    font-size: 13px;
+    min-height: 28px;
     padding: 0.05rem 0.45rem;
   }
 }
@@ -394,8 +406,14 @@ footer.sticky-bottom {
   }
 
   .publications ol.bibliography > li {
-    margin-bottom: 1.75rem;
-    padding-bottom: 1.75rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .publications ol.bibliography > li .links a.btn {
+    font-size: 14px;
+    min-height: 44px;
+    min-width: 44px;
   }
 
   .publications .abbr {

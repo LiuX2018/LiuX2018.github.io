@@ -111,6 +111,13 @@ for (const route of routes) {
           });
         expect(authorColors.self).not.toBe(authorColors.coauthor);
         expect(authorColors.links.every((color) => color === authorColors.coauthor)).toBe(true);
+
+        const intros = page.locator(".publications .publication-intro");
+        await expect(intros).toHaveCount(route.slug === "about" ? await page.locator(".publications ol.bibliography > li").count() : 0);
+        if (route.slug === "about") {
+          await expect(intros.first()).toBeVisible();
+          expect((await intros.allTextContents()).every((intro) => intro.trim().length > 0)).toBe(true);
+        }
       }
 
       if (["about", "publications"].includes(route.slug) && testInfo.project.name === "desktop") {
@@ -157,11 +164,96 @@ for (const route of routes) {
         }
       }
 
+      if (["about", "publications"].includes(route.slug)) {
+        const mobile = page.viewportSize().width < 768;
+        const buttons = await page.locator(".publications .links a.btn").evaluateAll((links) =>
+          links.map((link) => ({
+            height: link.getBoundingClientRect().height,
+            width: link.getBoundingClientRect().width,
+            fontSize: getComputedStyle(link).fontSize,
+          }))
+        );
+        expect(buttons.every((button) => button.height >= (mobile ? 44 : 28))).toBe(true);
+        expect(buttons.every((button) => button.fontSize === (mobile ? "14px" : "13px"))).toBe(true);
+        if (mobile) expect(buttons.every((button) => button.width >= 44)).toBe(true);
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+        await page
+          .locator(".publications ol.bibliography > li")
+          .first()
+          .evaluate((row) => {
+            window.scrollTo(0, row.getBoundingClientRect().top + window.scrollY - 80);
+          });
+        await expect(page).toHaveScreenshot(route.slug + "-papers-" + theme + ".png", { caret: "hide", fullPage: false });
+      }
+
       await page.evaluate(() => window.scrollTo(0, 0));
       await expect(page).toHaveScreenshot(`${route.slug}-${theme}.png`, {
         caret: "hide",
         fullPage: false,
       });
+    });
+  }
+}
+
+for (const route of routes.filter((route) => ["about", "publications"].includes(route.slug))) {
+  for (const theme of ["light", "dark"]) {
+    test(route.slug + " responsive " + theme, async ({ page }, testInfo) => {
+      test.skip(testInfo.project.name !== "desktop", "This test sets each viewport explicitly.");
+      await page.addInitScript((theme) => localStorage.setItem("theme", theme), theme);
+      await page.route(/(?:cloudfront\.net|badge\.dimensions\.ai|github\.githubassets\.com)/, (request) => request.abort());
+      await page.goto(route.path, { waitUntil: "domcontentloaded" });
+      for (const width of [1440, 390, 320, 767, 768]) {
+        await page.setViewportSize({ width, height: 1000 });
+        const mobile = width < 768;
+        const metrics = await page.locator(".publications ol.bibliography > li").evaluateAll((rows) =>
+          rows.map((row) => {
+            const links = row.querySelector(".links");
+            const intro = row.querySelector(".publication-intro");
+            const linkBounds = links.getBoundingClientRect();
+            return {
+              lastInGroup: row.matches(":last-child"),
+              margin: getComputedStyle(row).marginBottom,
+              padding: getComputedStyle(row).paddingBottom,
+              gap: getComputedStyle(links).gap,
+              wrap: getComputedStyle(links).flexWrap,
+              introClipped: intro ? intro.scrollWidth > intro.clientWidth || intro.scrollHeight > intro.clientHeight + 1 : false,
+              buttons: [...links.querySelectorAll("a.btn")].map((button) => {
+                const bounds = button.getBoundingClientRect();
+                return {
+                  height: bounds.height,
+                  width: bounds.width,
+                  font: getComputedStyle(button).fontSize,
+                  contained: bounds.left >= linkBounds.left - 1 && bounds.right <= linkBounds.right + 1,
+                };
+              }),
+            };
+          })
+        );
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+        expect(metrics.every((row) => row.gap === "8px" && row.wrap === "wrap" && !row.introClipped)).toBe(true);
+        expect(metrics.filter((row) => !row.lastInGroup).every((row) => row.margin === "24px" && row.padding === "24px")).toBe(true);
+        expect(
+          metrics
+            .flatMap((row) => row.buttons)
+            .every(
+              (button) =>
+                button.contained &&
+                button.height >= (mobile ? 44 : 28) &&
+                button.font === (mobile ? "14px" : "13px") &&
+                (!mobile || button.width >= 44)
+            )
+        ).toBe(true);
+        const buttons = page.locator(".publications .links a.btn");
+        await buttons.first().focus();
+        await page.keyboard.press("Tab");
+        await expect(buttons.nth(1)).toBeFocused();
+        const focus = await buttons.nth(1).evaluate((button) => ({
+          visible: button.matches(":focus-visible"),
+          width: getComputedStyle(button).outlineWidth,
+          style: getComputedStyle(button).outlineStyle,
+        }));
+        expect(focus).toEqual({ visible: true, width: "2px", style: "solid" });
+      }
     });
   }
 }

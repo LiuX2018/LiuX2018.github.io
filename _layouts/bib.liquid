@@ -192,6 +192,9 @@
       {{ periodical | strip }}
     </div>
     <div class="periodical publication-note">{{ entry.note | strip }}</div>
+    {% if page.selected_papers and entry.intro %}
+      <p class="publication-intro">{{ entry.intro | strip | escape }}</p>
+    {% endif %}
 
     <!-- Links/Buttons -->
     <div class="links">

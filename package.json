@@ -4,7 +4,8 @@
     "lint:style-contract": "node test/style_contract.js",
     "test:repositories": "bundle exec ruby test/refresh_repositories_test.rb",
     "test:visual": "playwright test --config test/visual/playwright.config.js",
-    "test:visual:update": "playwright test --config test/visual/playwright.config.js --update-snapshots"
+    "test:visual:update": "playwright test --config test/visual/playwright.config.js --update-snapshots",
+    "test:publication-intros": "bundle exec ruby test/publication_intros_test.rb"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
