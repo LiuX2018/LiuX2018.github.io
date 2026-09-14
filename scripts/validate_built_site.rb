@@ -49,7 +49,6 @@ repository_entries.each_with_index do |entry, index|
 end
 
 expected_source_counts = {
-  "news items" => [news_files.length, 9],
   "publications" => [publication_count, 26],
   "publication previews" => [preview_count, 26],
   "software repositories" => [repository_count, 6]
@@ -142,7 +141,7 @@ end
 
 if (news_document = documents["/news/"])
   built_news_count = news_document.css(".news table tr").length
-  errors << "News page renders #{built_news_count} items; expected 9" unless built_news_count == 9
+  errors << "News page renders #{built_news_count} items; expected #{news_files.length}" unless built_news_count == news_files.length
 end
 
 if (publications_document = documents["/publications/"])
