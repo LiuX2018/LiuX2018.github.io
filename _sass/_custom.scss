@@ -387,14 +387,14 @@ strong .publication-marks .publication-mark-corresponding {
 
   ol.bibliography > li .links a.btn {
     align-items: center;
-    border-radius: 0.35rem;
+    border-radius: 0.25rem;
     display: inline-flex;
     justify-content: center;
     line-height: 1.2;
     margin: 0;
-    font-size: 13px;
-    min-height: 28px;
-    padding: 0.05rem 0.45rem;
+    font-size: 12px;
+    min-height: 24px;
+    padding: 0.05rem 0.35rem;
   }
 }
 
@@ -437,12 +437,6 @@ footer.sticky-bottom {
   .publications ol.bibliography > li {
     margin-bottom: 1.5rem;
     padding-bottom: 1.5rem;
-  }
-
-  .publications ol.bibliography > li .links a.btn {
-    font-size: 14px;
-    min-height: 44px;
-    min-width: 44px;
   }
 
   .publications .abbr {
