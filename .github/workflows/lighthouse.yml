@@ -36,9 +36,15 @@ jobs:
           sudo apt-get install -y imagemagick
           python -m pip install -r requirements.txt
           npm ci
+          npx playwright install --with-deps chromium
+          ruby scripts/check_publication_previews.rb
           bundle exec jekyll build
           npx --yes purgecss@7 -c purgecss.config.js
           bundle exec ruby scripts/validate_built_site.rb
+      - name: Check layout with delayed preview images
+        env:
+          PLAYWRIGHT_CHANNEL: chromium
+        run: npm run test:performance
       - name: Run Lighthouse
         run: |
           npx --yes @lhci/cli@0.15.x collect

@@ -14,11 +14,8 @@
   <meta http-equiv="Permissions-Policy" content="interest-cohort=()">
 {% endif %}
 
-<!-- Route-scoped connection hints and key-image preloads. -->
+<!-- Route-scoped connection hints. The profile picture selects its WebP source. -->
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-{% if page.url == '/' and page.profile.image %}
-  <link rel="preload" as="image" href="{{ '/assets/img/' | append: page.profile.image | relative_url }}" fetchpriority="high">
-{% endif %}
 {% if page.publication_badges %}
   <link rel="preconnect" href="https://d1bxh8uas1mnw7.cloudfront.net" crossorigin>
   <link rel="preconnect" href="https://badge.dimensions.ai" crossorigin>

@@ -136,7 +136,17 @@ end
 if (homepage = documents["/"])
   errors.concat(PublicationIntros.render_errors(homepage, bibliography_entries))
   errors << "Homepage profile image is missing" unless homepage.at_css('.profile img[alt="Portrait of Xin Liu"]')
-  errors << "Homepage does not preload its profile image" unless homepage.at_css('link[rel="preload"][as="image"][href*="xin_recent_photo.png"]')
+  if homepage.at_css('link[rel="preload"][as="image"][href*="xin_recent_photo.png"]')
+    errors << "Homepage must not preload the unused original profile PNG alongside its responsive WebP"
+  end
+end
+
+documents.each do |route, document|
+  document.css(".publications img.preview").each do |image|
+    unless %w[width height].all? { |attribute| image[attribute].to_s.match?(/\A[1-9]\d*\z/) }
+      errors << "#{route} preview #{image['src']} must reserve its intrinsic aspect ratio with numeric dimensions"
+    end
+  end
 end
 
 if (news_document = documents["/news/"])

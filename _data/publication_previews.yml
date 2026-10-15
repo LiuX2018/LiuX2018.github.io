@@ -1,0 +1,79 @@
+---
+2020_sim_aberration.png:
+  width: 1750
+  height: 1184
+2020_spatial_sim.png:
+  width: 2560
+  height: 1616
+2021_3d_nanoscopy_review.png:
+  width: 2192
+  height: 1476
+2021_analytical_vortex.png:
+  width: 1458
+  height: 1460
+2021_longitudinal_vortex.png:
+  width: 1474
+  height: 1074
+2021_psf_engineering_review.png:
+  width: 1880
+  height: 632
+2021_subdiff_vortex.png:
+  width: 1522
+  height: 1530
+2022_dm_psf_optimization.png:
+  width: 1936
+  height: 1256
+2022_dps_sted.png:
+  width: 2130
+  height: 1110
+2022_minflux.png:
+  width: 2130
+  height: 1436
+2022_modulated_confocal.png:
+  width: 1838
+  height: 1412
+2022_optics_model_representation.png:
+  width: 2612
+  height: 1000
+2022_slm_calibration.png:
+  width: 1210
+  height: 602
+2023_adaptive_optics_review.png:
+  width: 2002
+  height: 1310
+2023_direct_laser_writing.png:
+  width: 1686
+  height: 1468
+2023_focus_array.gif:
+  width: 480
+  height: 480
+2023_high_speed_sim.png:
+  width: 2378
+  height: 1528
+2023_metasurface.png:
+  width: 1396
+  height: 1476
+2023_multifocus_lifetime_imaging.png:
+  width: 2286
+  height: 966
+2023_off_axis_psf.jpg:
+  width: 168
+  height: 168
+2024_hyperspectral_review.png:
+  width: 2254
+  height: 988
+2024_vectorial_psf_pupil.png:
+  width: 1873
+  height: 1511
+2025_off_aperture_encoding.jpg:
+  width: 1362
+  height: 728
+2025_tilted_heart.png:
+  width: 780
+  height: 780
+2026_holo_path_tracer.jpg:
+  width: 1526
+  height: 772
+2026_reduced_precision_modeling.png:
+  width: 2740
+  height: 1580

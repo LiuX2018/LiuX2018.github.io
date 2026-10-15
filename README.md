@@ -29,6 +29,8 @@ npm run lint:style-contract
 
 Run Lighthouse against the production build with `npx lhci autorun`, and run the Playwright visual checks with `npm run test:visual`.
 
+After adding or replacing a publication preview, run `ruby scripts/check_publication_previews.rb --write` (requires ImageMagick) and commit `_data/publication_previews.yml`. These dimensions reserve each image's aspect ratio before it loads. Run `npm run test:performance` against the production build to check delayed image loads on mobile and desktop in both themes. Install Chromium first with `npx playwright install chromium` and set `PLAYWRIGHT_CHANNEL=chromium` when using that browser.
+
 ## Upgrade audits
 
 Before changing al-folio versions, run:

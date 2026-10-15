@@ -92,7 +92,9 @@ for (const route of routes) {
         const previewRatioOffsets = await page.locator(".publications img.preview").evaluateAll((images) =>
           images.map((image) => {
             const bounds = image.getBoundingClientRect();
-            return Math.abs(bounds.width / bounds.height - image.naturalWidth / image.naturalHeight);
+            // naturalWidth/Height are rounded after srcset density correction.
+            // The HTML dimensions retain the source image's exact aspect ratio.
+            return Math.abs(bounds.width / bounds.height - Number(image.getAttribute("width")) / Number(image.getAttribute("height")));
           })
         );
         expect(previewRatioOffsets.every((offset) => offset <= 0.01)).toBe(true);

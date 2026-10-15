@@ -46,16 +46,36 @@
           <img class="preview z-depth-1 rounded" src="{{ entry.preview }}">
         {% else %}
           {% assign entry_path = entry.preview | prepend: '/assets/img/publication_preview/' %}
-          {%
-            include figure.liquid
-            loading="eager"
-            path=entry_path
-            sizes = "800px"
-            class="preview z-depth-1 rounded"
-            zoomable=true
-            avoid_scaling=true
-            alt=entry.preview
-          %}
+          {% assign preview_dimensions = site.data.publication_previews[entry.preview] %}
+          {% assign preview_loading = 'lazy' %}
+          {%- comment -%}Scholar's index restarts for each year; keep each group's leading image eager.{%- endcomment -%}
+          {% if page.url == '/publications/' and index == 1 %}
+            {% assign preview_loading = 'eager' %}
+          {% endif %}
+          <figure>
+            <picture>
+              {% if site.imagemagick.enabled and preview_extension != 'gif' %}
+                {% assign preview_stem = entry_path | split: '.' | pop | join: '.' %}
+                <source
+                  type="image/webp"
+                  srcset="{% for width in site.imagemagick.widths %}{{ preview_stem | relative_url }}-{{ width }}.webp {{ width }}w{% unless forloop.last %}, {% endunless %}{% endfor %}"
+                  sizes="(min-width: 352px) 320px, calc(100vw - 32px)"
+                >
+              {% endif %}
+              <img
+                src="{{ entry_path | relative_url }}"
+                width="{{ preview_dimensions.width }}"
+                height="{{ preview_dimensions.height }}"
+                style="aspect-ratio: {{ preview_dimensions.width }} / {{ preview_dimensions.height }}"
+                class="preview z-depth-1 rounded"
+                alt="{{ entry.preview | escape }}"
+                loading="{{ preview_loading }}"
+                data-zoomable
+                data-zoom-src="{{ entry_path | relative_url }}"
+                onerror="this.onerror=null; this.parentElement.querySelector('source')?.remove();"
+              >
+            </picture>
+          </figure>
         {% endif %}
       {% endif %}
     </div>
