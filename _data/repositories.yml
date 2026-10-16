@@ -2,8 +2,8 @@ github_users:
   - LiuX2018
 
 github_repos:
-  - repository: LiuX2018/On-computational-optics
-    description: Xin's insights into computational optics
+  - repository: LiuX2018/Computational-Optics
+    description: My insights into computational optics
     language:
     stars: 7
     forks: 0
