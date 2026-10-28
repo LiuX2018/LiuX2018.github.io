@@ -12,7 +12,8 @@ permissions:
 
 jobs:
   lighthouse:
-    runs-on: ubuntu-latest
+    # Keep Ruby 3.3.5 on a runner with a matching prebuilt binary.
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v5
