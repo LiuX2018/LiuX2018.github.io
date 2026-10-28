@@ -12,7 +12,8 @@ permissions:
 
 jobs:
   axe:
-    runs-on: ubuntu-latest
+    # Keep Ruby 3.3.5 on a runner with a matching prebuilt binary.
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v5
       - uses: ruby/setup-ruby@v1
